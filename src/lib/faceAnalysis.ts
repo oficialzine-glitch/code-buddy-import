@@ -65,7 +65,7 @@ export type AnalysisResult = {
   featureBalance: number;
   
   // New optional analysis blocks from GPT-5
-  symmetry?: SymmetryBlock;
+  symmetryBlock?: SymmetryBlock;
   proportions?: ProportionsBlock;
   nose?: NoseBlock;
   lipsMouth?: LipsMouthBlock;

@@ -31,17 +31,16 @@ export interface FacialAnalysis {
   // Legacy UI compatibility fields
   overallScore?: number;
   scores?: Array<{ key: string; label: string; score: number; raw?: number }>;
-  symmetry?: number;
 
   // Existing advanced blocks
-  symmetry?: {
+  symmetryBlock?: {
     score?: number;
     faceSymmetryPct?: number;
     eyeHeightDiffPx?: number;
     mouthCornerTiltDeg?: number;
   };
 
-  goldenRatio?: {
+  goldenRatioBlock?: {
     score?: number;
     matchPct?: number;
     note?: string;

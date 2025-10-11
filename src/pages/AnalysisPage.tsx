@@ -13,8 +13,10 @@ import { saveAnalysis } from '../lib/history';
 
 interface AnalysisPageProps {
   onBack: () => void;
-  onNavigate?: (page: string) => void;
+  onNavigate?: (page: PageType) => void;
 }
+
+type PageType = 'intro' | 'onboarding' | 'home' | 'analysis' | 'upload' | 'results' | 'profile' | 'auth' | 'analysis-view' | 'previous-analyses' | 'glowup-map' | 'hairstyles';
 
 export default function AnalysisPage({ onBack, onNavigate }: AnalysisPageProps) {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);

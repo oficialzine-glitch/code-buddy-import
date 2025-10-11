@@ -9,7 +9,7 @@ import appFotoImage from '../assets/app foto1 copy copy copy copy copy copy.webp
 import mapImage from '../assets/map.webp';
 
 interface HomePageProps {
-  onNavigate: (page: 'analysis' | 'hairstyles' | 'results' | 'profile' | 'auth') => void;
+  onNavigate: (page: 'analysis' | 'hairstyles' | 'results' | 'profile' | 'auth' | 'upload') => void;
 }
 
 export default function HomePage({ onNavigate }: HomePageProps) {
@@ -412,7 +412,7 @@ export default function HomePage({ onNavigate }: HomePageProps) {
 
         {/* Premium Modal */}
         {showPremiumModal && (
-          <PremiumModal onClose={() => setShowPremiumModal(false)} />
+          <PremiumModal isOpen={showPremiumModal} onClose={() => setShowPremiumModal(false)} />
         )}
       </div>
     </div>

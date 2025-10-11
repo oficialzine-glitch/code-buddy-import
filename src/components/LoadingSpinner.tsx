@@ -87,7 +87,7 @@ export default function LoadingSpinner({ message, imageSrc }: LoadingSpinnerProp
       </div>
 
       {/* Custom CSS for animations */}
-      <style jsx>{`
+      <style>{`
         @keyframes progress {
           0% {
             transform: translateX(-100%);

@@ -16,7 +16,7 @@ import CreatorCodeModal from './components/CreatorCodeModal';
 import { FacialAnalysis } from './types';
 import { useAuth } from './contexts/AuthContext';
 
-type PageType = 'intro' | 'onboarding' | 'home' | 'analysis' | 'upload' | 'results' | 'profile' | 'auth' | 'analysis-view' | 'previous-analyses' | 'glowup-map';
+type PageType = 'intro' | 'onboarding' | 'home' | 'analysis' | 'upload' | 'results' | 'profile' | 'auth' | 'analysis-view' | 'previous-analyses' | 'glowup-map' | 'hairstyles';
 
 function App() {
   const [currentPage, setCurrentPage] = useState<PageType>('intro');

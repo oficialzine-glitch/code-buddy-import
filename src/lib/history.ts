@@ -35,7 +35,7 @@ export async function saveAnalysis(opts: { userId: string; imageUrl?: string | n
 
   // Keep only the newest 10 rows for this user
   const { data: rows } = await supabase
-    .from<Pick<AnalysisRow, "id" | "created_at">>(TABLE)
+    .from(TABLE)
     .select("id,created_at")
     .eq("user_id", userId)
     .order("created_at", { ascending: false });
@@ -52,7 +52,7 @@ export async function saveAnalysis(opts: { userId: string; imageUrl?: string | n
 export async function getHistory(opts: { userId: string; limit?: number }) {
   const { userId, limit = 10 } = opts;
   const { data, error } = await supabase
-    .from<AnalysisRow>(TABLE)
+    .from(TABLE)
     .select("id, user_id, created_at, image_url, analysis, overall_score")
     .eq("user_id", userId)
     .order("created_at", { ascending: false })

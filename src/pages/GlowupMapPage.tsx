@@ -53,7 +53,7 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
   const [selectedAnalysis, setSelectedAnalysis] = useState<AnalysisRow | null>(null);
   const [generating, setGenerating] = useState(false);
   const [plan, setPlan] = useState<GlowupPlan | null>(null);
-  const [activeTab, setActiveTab] = useState<"eyeArea" | "cheekbones" | "jawline" | "symmetry" | "faceShape">("eyeArea");
+  const [activeTab, setActiveTab] = useState<"eyeArea" | "cheekbones" | "jawline" | "symmetry" | "faceShape" | "attractiveness" | "skin">("eyeArea");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [taskChecks, setTaskChecks] = useState<Record<string, boolean>>({});
   const [progress, setProgress] = useState(0);
@@ -810,7 +810,7 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
       </div>
       
       {/* Custom CSS for animations */}
-      <style jsx>{`
+      <style>{`
         .animate-spin-slow {
           animation: spin 4s linear infinite;
         }
