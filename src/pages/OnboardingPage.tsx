@@ -76,7 +76,7 @@ export default function OnboardingPage({ onComplete }: OnboardingPageProps) {
   // Loading animation effect
   useEffect(() => {
     if (showLoading) {
-      const duration = 7000;
+      const duration = 5000;
       const intervalTime = 50;
       const increment = (100 / duration) * intervalTime;
 
@@ -240,7 +240,7 @@ export default function OnboardingPage({ onComplete }: OnboardingPageProps) {
       <div className="min-h-screen bg-gradient-to-br from-black via-slate-950 to-black flex items-center justify-center">
         <div className="relative w-64 h-64">
           {/* Arc segments */}
-          <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 200 200">
+          <svg className="absolute inset-0 w-full h-full -rotate-90 animate-spin" style={{ animationDuration: '3s' }} viewBox="0 0 200 200">
             {/* Bottom arc (cyan) - animates based on progress */}
             <circle
               cx="100"
