@@ -1,2 +1,2 @@
 // src/lib/supabaseClient.ts
-export { supabase } from "./supabase";
+export { supabase } from "@/integrations/supabase/client";
