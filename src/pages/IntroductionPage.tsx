@@ -8,11 +8,11 @@ export default function IntroductionPage({
 }: IntroductionPageProps) {
   return <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-slate-950 relative overflow-hidden flex flex-col">
       {/* Blue gradient overlay */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-blue-600/20 via-cyan-500/10 to-transparent rounded-full blur-3xl"></div>
-      <div className="absolute top-10 right-10 w-64 h-64 bg-gradient-to-bl from-cyan-400/15 via-blue-500/8 to-transparent rounded-full blur-2xl"></div>
+      <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-blue-600/10 via-cyan-500/5 to-transparent rounded-full blur-3xl"></div>
+      <div className="absolute top-10 right-10 w-64 h-64 bg-gradient-to-bl from-cyan-400/8 via-blue-500/4 to-transparent rounded-full blur-2xl"></div>
       
       {/* Subtle dots pattern */}
-      <div className="absolute inset-0 opacity-40">
+      <div className="absolute inset-0 opacity-20">
         <div className="absolute top-20 left-10 w-1 h-1 bg-blue-400 rounded-full"></div>
         <div className="absolute top-32 left-20 w-1 h-1 bg-cyan-400 rounded-full"></div>
         <div className="absolute top-40 right-20 w-1 h-1 bg-blue-300 rounded-full"></div>
