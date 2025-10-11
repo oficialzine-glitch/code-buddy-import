@@ -452,7 +452,13 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
           </div>
         )}
 
-
+        {!selectedAnalysis ? (
+          /* Step 1: Analysis Selection */
+          <div className="animate-fade-in">
+            <div className="text-center mb-8">
+              <h2 className="text-2xl font-bold text-white mb-2">Pick an analysis to generate your Glowup Map</h2>
+              <p className="text-slate-400">Choose from your recent facial analyses</p>
+            </div>
 
             {analyses.length === 0 ? (
               /* Empty State */
