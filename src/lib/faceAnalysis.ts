@@ -76,7 +76,10 @@ export type AnalysisResult = {
   [key: string]: any;
 };
 
-const GPT5_ANALYSIS_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/gpt5-analysis`;
+// Use your external Supabase project
+const SUPABASE_URL = "https://hebwatwkpszebonmrige.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhlYndhdHdrcHN6ZWJvbm1yaWdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUyMjkyNzQsImV4cCI6MjA3MDgwNTI3NH0.8nzmRDHCn5Z8deJ5hHOAeSf4K80GkzXd-sisVLikE64";
+const GPT5_ANALYSIS_URL = `${SUPABASE_URL}/functions/v1/gpt5-analysis`;
 
 async function fileToBase64Data(file: File): Promise<string> {
   try {
@@ -96,8 +99,8 @@ export async function analyzeFacialFeatures(file: File): Promise<AnalysisResult>
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ?? ""}`,
-      "apikey": import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ?? ""
+      "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+      "apikey": SUPABASE_ANON_KEY
     },
     body: JSON.stringify({ image_base64 })
   });
