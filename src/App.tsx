@@ -39,7 +39,10 @@ function App() {
   // Show auth page if user is not authenticated
   if (!user) {
     if (currentPage === 'intro') {
-      return <IntroductionPage onGetStarted={() => setCurrentPage('onboarding')} />;
+      return <IntroductionPage 
+        onGetStarted={() => setCurrentPage('onboarding')} 
+        onSignIn={() => setCurrentPage('auth')}
+      />;
     }
     if (currentPage === 'onboarding') {
       return <OnboardingPage onComplete={() => setCurrentPage('auth')} />;
