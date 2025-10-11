@@ -156,7 +156,7 @@ export default function OnboardingPage({ onComplete }: OnboardingPageProps) {
   // Completion screen
   if (showCompletion) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-950 via-blue-950 to-slate-950 flex items-center justify-center p-6">
+      <div className="min-h-screen bg-gradient-to-br from-black via-slate-950 to-black flex items-center justify-center p-6">
         <div className="text-center animate-fade-in">
           {/* Circular progress with checkmark */}
           <div className="relative w-48 h-48 mx-auto mb-12">
@@ -237,7 +237,7 @@ export default function OnboardingPage({ onComplete }: OnboardingPageProps) {
   // Loading screen
   if (showLoading && !showCompletion) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-950 via-blue-950 to-slate-950 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-black via-slate-950 to-black flex items-center justify-center">
         <div className="relative w-64 h-64">
           {/* Arc segments */}
           <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 200 200">
