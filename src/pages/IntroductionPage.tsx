@@ -1,19 +1,14 @@
 import React from 'react';
-import { ArrowRight, Sparkles, ChevronRight } from 'lucide-react';
+import phoneMockup from '../assets/phone-mockup.png';
 
 interface IntroductionPageProps {
   onGetStarted: () => void;
 }
 
 export default function IntroductionPage({ onGetStarted }: IntroductionPageProps) {
-  const handleSwipe = (e: React.TouchEvent | React.MouseEvent) => {
-    // For now, we'll trigger on touch/click, but this could be enhanced with actual swipe detection
-    onGetStarted();
-  };
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-slate-950 to-black relative overflow-hidden flex flex-col">
-      {/* Blue gradient overlay in top right */}
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-slate-950 relative overflow-hidden flex flex-col">
+      {/* Blue gradient overlay */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-blue-600/20 via-cyan-500/10 to-transparent rounded-full blur-3xl"></div>
       <div className="absolute top-10 right-10 w-64 h-64 bg-gradient-to-bl from-cyan-400/15 via-blue-500/8 to-transparent rounded-full blur-2xl"></div>
       
@@ -27,55 +22,53 @@ export default function IntroductionPage({ onGetStarted }: IntroductionPageProps
         <div className="absolute bottom-32 right-24 w-1 h-1 bg-cyan-400 rounded-full"></div>
       </div>
 
+      {/* Circular outlines */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+        <div className="w-[600px] h-[600px] rounded-full border border-slate-700/20 absolute inset-0 animate-pulse"></div>
+        <div className="w-[700px] h-[700px] rounded-full border border-slate-600/15 absolute -inset-[50px] animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+        <div className="w-[800px] h-[800px] rounded-full border border-slate-500/10 absolute -inset-[100px] animate-pulse" style={{ animationDelay: '1s' }}></div>
+      </div>
+
       {/* Main content */}
-      <div className="flex-1 flex flex-col items-center justify-center px-6 pb-32">
-        {/* Circular logo design */}
-        <div className="relative mb-16">
-          {/* Outer circles */}
-          <div className="w-80 h-80 rounded-full border border-slate-700/30 absolute inset-0 animate-pulse"></div>
-          <div className="w-64 h-64 rounded-full border border-slate-600/40 absolute inset-8 animate-pulse" style={{ animationDelay: '0.5s' }}></div>
-          <div className="w-48 h-48 rounded-full border border-slate-500/50 absolute inset-16 animate-pulse" style={{ animationDelay: '1s' }}></div>
-          
-          {/* Center logo */}
-          <div className="w-32 h-32 bg-gradient-to-br from-cyan-500 via-blue-500 to-blue-600 rounded-full flex items-center justify-center relative z-10 shadow-2xl shadow-cyan-500/30 animate-pulse" style={{ animationDelay: '1.5s' }}>
-            <Sparkles className="w-16 h-16 text-white" />
-          </div>
+      <div className="flex-1 flex flex-col items-center justify-center px-6 pt-12 pb-8">
+        {/* Phone mockup */}
+        <div className="relative mb-8 animate-fade-in">
+          <img 
+            src={phoneMockup} 
+            alt="Face analysis on phone" 
+            className="w-auto h-[400px] object-contain drop-shadow-2xl"
+          />
         </div>
 
         {/* Text content */}
-        <div className="text-center mb-16 max-w-sm">
-          <h1 className="text-3xl font-bold text-white mb-4 leading-tight">
-            Take your face to the next level with{' '}
-            <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-blue-500 bg-clip-text text-transparent">
-              NextFace AI
-            </span>
+        <div className="text-center mb-8 max-w-md animate-slide-up">
+          <h1 className="text-3xl font-bold text-white mb-3 leading-tight">
+            Upload a photo, get your AI analysis
           </h1>
-          <p className="text-slate-400 text-lg leading-relaxed">
-            Unlock your true potential with advanced AI facial analysis and personalized beauty insights
-          </p>
-        </div>
-
-        {/* Page indicators */}
-        <div className="flex space-x-2 mb-12">
-          <div className="w-2 h-2 bg-cyan-400 rounded-full"></div>
-          <div className="w-2 h-2 bg-slate-600 rounded-full"></div>
-          <div className="w-2 h-2 bg-slate-600 rounded-full"></div>
         </div>
       </div>
 
-      {/* Get Started button */}
-      <div className="px-6 pb-8">
+      {/* Bottom section */}
+      <div className="px-6 pb-8 space-y-4">
+        {/* Get Started button */}
         <button
-          onClick={handleSwipe}
-          onTouchEnd={handleSwipe}
+          onClick={onGetStarted}
           className="w-full bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 text-white font-semibold py-4 rounded-full shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center relative overflow-hidden group"
         >
-          {/* Centered text */}
           <span className="text-lg font-medium">Get Started</span>
-          
-          {/* Swipe animation effect */}
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
         </button>
+
+        {/* Sign in link */}
+        <p className="text-center text-slate-400">
+          Already have an account?{' '}
+          <button 
+            onClick={onGetStarted}
+            className="text-cyan-400 hover:text-cyan-300 transition-colors font-medium"
+          >
+            Sign in
+          </button>
+        </p>
       </div>
     </div>
   );
