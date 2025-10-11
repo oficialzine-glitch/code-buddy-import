@@ -12,7 +12,7 @@ export default function IntroductionPage({
       <div className="absolute top-10 right-10 w-64 h-64 bg-gradient-to-bl from-cyan-400/15 via-blue-500/8 to-transparent rounded-full blur-2xl"></div>
       
       {/* Subtle dots pattern */}
-      <div className="absolute inset-0 opacity-10">
+      <div className="absolute inset-0 opacity-0">
         <div className="absolute top-20 left-10 w-1 h-1 bg-blue-400 rounded-full"></div>
         <div className="absolute top-32 left-20 w-1 h-1 bg-cyan-400 rounded-full"></div>
         <div className="absolute top-40 right-20 w-1 h-1 bg-blue-300 rounded-full"></div>
