@@ -76,7 +76,7 @@ export type AnalysisResult = {
   [key: string]: any;
 };
 
-const GPT5_ANALYSIS_URL = "https://hebwatwkpszebonmrige.supabase.co/functions/v1/gpt5-analysis";
+const GPT5_ANALYSIS_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/gpt5-analysis`;
 
 async function fileToBase64Data(file: File): Promise<string> {
   try {
@@ -96,8 +96,8 @@ export async function analyzeFacialFeatures(file: File): Promise<AnalysisResult>
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY ?? ""}`,
-      "apikey": import.meta.env.VITE_SUPABASE_ANON_KEY ?? ""
+      "Authorization": `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ?? ""}`,
+      "apikey": import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ?? ""
     },
     body: JSON.stringify({ image_base64 })
   });
