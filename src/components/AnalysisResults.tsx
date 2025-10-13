@@ -92,8 +92,8 @@ export default function AnalysisResults({ analysis, imageUrl, isPremium = false,
               {isBlurred && (
                 <div className="absolute inset-0 bg-black/60 backdrop-blur-sm rounded-3xl flex items-center justify-center z-10">
                   <div className="text-center">
-                    <Crown className="w-10 h-10 text-yellow-400 mx-auto mb-2" strokeWidth={2.5} />
-                    <p className="text-yellow-400 font-bold text-sm">Premium</p>
+                    <Crown className="w-7 h-7 text-yellow-400 mx-auto mb-1" strokeWidth={2.5} />
+                    <p className="text-yellow-400 font-bold text-xs">Premium</p>
                   </div>
                 </div>
               )}
