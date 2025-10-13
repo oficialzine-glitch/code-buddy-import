@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Eye, Star, Sparkles, Calendar, BarChart3 } from 'lucide-react';
+import { X, Eye, Star, Sparkles, Calendar, BarChart3, Crown } from 'lucide-react';
 
 type Props = {
   analysis: any;             // exact object from Edge Function (don't reshape)
@@ -92,8 +92,8 @@ export default function AnalysisResults({ analysis, imageUrl, isPremium = false,
               {isBlurred && (
                 <div className="absolute inset-0 bg-black/60 backdrop-blur-sm rounded-3xl flex items-center justify-center z-10">
                   <div className="text-center">
-                    <div className="w-6 h-6 text-yellow-400 mx-auto mb-1">👑</div>
-                    <p className="text-yellow-400 font-semibold text-xs">Premium</p>
+                    <Crown className="w-10 h-10 text-yellow-400 mx-auto mb-2" strokeWidth={2.5} />
+                    <p className="text-yellow-400 font-bold text-sm">Premium</p>
                   </div>
                 </div>
               )}
