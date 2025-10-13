@@ -64,7 +64,7 @@ export function useImageProcessing() {               // ← named export (requir
   const [analysis, setAnalysis] = useState<FacialAnalysis | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
-  async function analyzeImage(file: File) {
+  async function analyzeImage(file: File, isPremium: boolean = false) {
     setIsAnalyzing(true);
     setError(null);
     setAnalysis(null);
@@ -72,7 +72,7 @@ export function useImageProcessing() {               // ← named export (requir
     try {
       try { setPreviewUrl(URL.createObjectURL(file)); } catch {}
 
-      const result: AnalysisResult = await analyzeFacialFeatures(file);
+      const result: AnalysisResult = await analyzeFacialFeatures(file, isPremium);
 
       // ❌ avoid: setAnalysis(transform(result)) or setAnalysis({ overall: result.overall, ... })
       setAnalysis(result); // ✅ keep all keys untouched

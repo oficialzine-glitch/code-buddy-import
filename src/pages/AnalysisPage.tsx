@@ -32,7 +32,7 @@ export default function AnalysisPage({ onBack, onNavigate }: AnalysisPageProps) 
     setSelectedImage(url);
     
     try {
-      const result = await analyzeImage(file);
+      const result = await analyzeImage(file, isPremium);
       
       // Save analysis to history after successful completion
       if (result && user) {

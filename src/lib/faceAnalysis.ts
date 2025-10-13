@@ -80,6 +80,7 @@ export type AnalysisResult = {
 const SUPABASE_URL = "https://hebwatwkpszebonmrige.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhlYndhdHdrcHN6ZWJvbm1yaWdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUyMjkyNzQsImV4cCI6MjA3MDgwNTI3NH0.8nzmRDHCn5Z8deJ5hHOAeSf4K80GkzXd-sisVLikE64";
 const GPT5_ANALYSIS_URL = `${SUPABASE_URL}/functions/v1/gpt5-analysis`;
+const GPT5_PREVIEW_URL = `${SUPABASE_URL}/functions/v1/gpt5-overall-preview`;
 
 async function fileToBase64Data(file: File): Promise<string> {
   try {
@@ -92,10 +93,13 @@ async function fileToBase64Data(file: File): Promise<string> {
   }
 }
 
-export async function analyzeFacialFeatures(file: File): Promise<AnalysisResult> {
+export async function analyzeFacialFeatures(file: File, isPremium: boolean = false): Promise<AnalysisResult> {
   const image_base64 = await fileToBase64Data(file);
 
-  const res = await fetch(GPT5_ANALYSIS_URL, {
+  // Use different endpoint based on premium status
+  const endpoint = isPremium ? GPT5_ANALYSIS_URL : GPT5_PREVIEW_URL;
+
+  const res = await fetch(endpoint, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
