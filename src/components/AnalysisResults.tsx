@@ -294,7 +294,17 @@ export default function AnalysisResults({ analysis, imageUrl, isPremium = false,
         }
 
         return (
-          <section className="mt-8 space-y-4" aria-label="Advanced Analysis Blocks">
+          <section className="mt-8 space-y-4 relative" aria-label="Advanced Analysis Blocks">
+            {/* Premium Overlay for Free Users */}
+            {!isPremium && (
+              <div className="absolute inset-0 bg-black/60 backdrop-blur-md rounded-3xl flex items-center justify-center z-20 border border-yellow-500/30">
+                <div className="text-center">
+                  <Crown className="w-16 h-16 text-yellow-400 mx-auto mb-3" strokeWidth={2.5} />
+                  <p className="text-yellow-400 font-bold text-2xl mb-2">Premium</p>
+                  <p className="text-slate-300 text-sm">Unlock detailed analysis</p>
+                </div>
+              </div>
+            )}
             {/* Symmetry */}
             {analysis?.symmetry?.score != null && (
               <PillMeterInline
