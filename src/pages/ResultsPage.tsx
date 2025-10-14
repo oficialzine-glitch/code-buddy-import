@@ -107,19 +107,19 @@ export default function ResultsPage({ onNavigate }: ResultsPageProps) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-slate-950 to-black p-4 pb-20">
       <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-8 pt-4 animate-fade-in">
-          <div>
-            <h1 className="text-3xl font-bold text-white">Analysis Results</h1>
-            <p className="text-slate-400">View your facial analysis results</p>
-          </div>
-          {analyses.length > 0 && (
+        {analyses.length > 0 && (
+          /* Header */
+          <div className="flex items-center justify-between mb-8 pt-4 animate-fade-in">
+            <div>
+              <h1 className="text-3xl font-bold text-white">Analysis Results</h1>
+              <p className="text-slate-400">View your facial analysis results</p>
+            </div>
             <div className="text-right">
               <div className="text-2xl font-bold text-white">{analyses.length}</div>
               <div className="text-slate-400 text-sm">Total Analyses</div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
 
         {analyses.length === 0 ? (
           /* No Results State */
