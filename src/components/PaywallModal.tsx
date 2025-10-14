@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, Crown, Check } from 'lucide-react';
 import TermsOfServiceModal from './TermsOfServiceModal';
+import PrivacyPolicyModal from './PrivacyPolicyModal';
 
 interface PaywallModalProps {
   isOpen: boolean;
@@ -11,6 +12,7 @@ export default function PaywallModal({ isOpen, onClose }: PaywallModalProps) {
   const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<'weekly' | 'monthly' | 'yearly'>('yearly');
   const [showTermsModal, setShowTermsModal] = useState(false);
+  const [showPrivacyModal, setShowPrivacyModal] = useState(false);
 
   if (!isOpen) return null;
 
@@ -271,9 +273,18 @@ export default function PaywallModal({ isOpen, onClose }: PaywallModalProps) {
 
           {/* Footer Links - Smaller */}
           <div className="flex justify-center space-x-6 text-slate-400 text-xs">
-            <button className="hover:text-white transition-colors">Terms of Use</button>
-            <button className="hover:text-white transition-colors">Restore Purchase</button>
-            <button className="hover:text-white transition-colors">Privacy Policy</button>
+            <button 
+              onClick={() => setShowTermsModal(true)}
+              className="hover:text-white transition-colors"
+            >
+              Terms of Service
+            </button>
+            <button 
+              onClick={() => setShowPrivacyModal(true)}
+              className="hover:text-white transition-colors"
+            >
+              Privacy Policy
+            </button>
           </div>
         </div>
       </div>
@@ -411,6 +422,12 @@ export default function PaywallModal({ isOpen, onClose }: PaywallModalProps) {
       <TermsOfServiceModal
         isOpen={showTermsModal}
         onClose={() => setShowTermsModal(false)}
+      />
+
+      {/* Privacy Policy Modal */}
+      <PrivacyPolicyModal
+        isOpen={showPrivacyModal}
+        onClose={() => setShowPrivacyModal(false)}
       />
     </div>
   );
