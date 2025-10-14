@@ -3,6 +3,7 @@ import { User, RefreshCw, Sparkles } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 import { getHistory, AnalysisRow } from "../lib/history";
 import { supabase } from "../lib/supabaseClient";
+import PremiumModal from "../components/PremiumModal";
 import ReviewPromptModal from "../components/ReviewPromptModal";
 
 // Local storage key for persisting glowup map state
@@ -46,7 +47,7 @@ interface GlowupMapPageProps {
 }
 
 export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
-  const { user } = useAuth();
+  const { user, isPremium } = useAuth();
 
   // State
   const [loading, setLoading] = useState(true);
@@ -63,6 +64,7 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
   const [showReviewPrompt, setShowReviewPrompt] = useState(false);
+  const [showPremiumModal, setShowPremiumModal] = useState(false);
 
   const loadingSteps = [
     "Creating improvement plan…",
@@ -254,6 +256,10 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
 
   // Handle analysis selection
   const handleAnalysisSelect = async (analysisRow: AnalysisRow) => {
+    if (!isPremium) {
+      setShowPremiumModal(true);
+      return;
+    }
     await generatePlan(analysisRow);
   };
 
@@ -362,7 +368,7 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-black via-slate-950 to-black flex items-center justify-center">
-        <div className="text-center">
+      <div className="text-center">
           <div className="w-8 h-8 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-slate-400">Loading your analyses...</p>
         </div>
@@ -887,6 +893,12 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
       <ReviewPromptModal
         isOpen={showReviewPrompt}
         onClose={handleCloseReviewPrompt}
+      />
+      
+      {/* Premium Modal */}
+      <PremiumModal 
+        isOpen={showPremiumModal} 
+        onClose={() => setShowPremiumModal(false)} 
       />
     </div>
   );
