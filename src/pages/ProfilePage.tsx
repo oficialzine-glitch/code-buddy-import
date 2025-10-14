@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, Settings, User, Camera, Trophy, Globe, ChevronRight, Languages, AlertTriangle, Bell, Shield, Crown, FileText, MessageCircle, Star } from 'lucide-react';
+import { ArrowLeft, Settings, User, Camera, Trophy, Globe, ChevronRight, Languages, AlertTriangle, Bell, Shield, Crown, FileText, MessageCircle } from 'lucide-react';
 import { getHistory } from '../lib/history';
 import LanguageModal from '../components/LanguageModal';
 import EditProfileModal from '../components/EditProfileModal';
@@ -230,27 +230,6 @@ export default function ProfilePage({ onBack, onNavigate }: ProfilePageProps) {
                 <div className="text-left">
                   <div className="text-white font-medium">Sign Out</div>
                   <div className="text-slate-400 text-sm">Sign out of your account</div>
-                </div>
-              </div>
-              <ChevronRight className="w-5 h-5 text-slate-400" />
-            </button>
-
-            <div className="border-t border-slate-700/50"></div>
-
-            <button 
-              onClick={() => {
-                // Placeholder for review functionality
-                console.log('Review modal will open here');
-              }}
-              className="w-full flex items-center justify-between p-4 hover:bg-slate-700/30 transition-colors duration-200"
-            >
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-yellow-500/20 rounded-full flex items-center justify-center">
-                  <Star className="w-5 h-5 text-yellow-400" />
-                </div>
-                <div className="text-left">
-                  <div className="text-white font-medium">Your opinion matters</div>
-                  <div className="text-slate-400 text-sm">Leave a sincere review</div>
                 </div>
               </div>
               <ChevronRight className="w-5 h-5 text-slate-400" />
