@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { ArrowLeft, User, RefreshCw, Sparkles } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
-import { getHistory, AnalysisRow } from '../lib/history';
-import { supabase } from '../lib/supabaseClient';
+import React, { useState, useEffect } from "react";
+import { ArrowLeft, User, RefreshCw, Sparkles } from "lucide-react";
+import { useAuth } from "../contexts/AuthContext";
+import { getHistory, AnalysisRow } from "../lib/history";
+import { supabase } from "../lib/supabaseClient";
 
 // Local storage key for persisting glowup map state
-const GLOWUP_MAP_STORAGE_KEY = 'glowup_map_state';
+const GLOWUP_MAP_STORAGE_KEY = "glowup_map_state";
 
 // Types
 type WeakPoint = {
   key: "jawline" | "cheekbones" | "skin" | "eyeArea" | "attractiveness" | "symmetry" | "faceShape";
   label: string;
   score: number;
-  explanation: string;   // 2–4 sentences
-  daily: string[];       // exactly 2
-  weekly: string[];      // up to 3
+  explanation: string; // 2–4 sentences
+  daily: string[]; // exactly 2
+  weekly: string[]; // up to 3
 };
 
 type MaxPotential = { low: number; high: number; rangeText: string } | null;
@@ -46,14 +46,16 @@ interface GlowupMapPageProps {
 
 export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
   const { user } = useAuth();
-  
+
   // State
   const [loading, setLoading] = useState(true);
   const [analyses, setAnalyses] = useState<AnalysisRow[]>([]);
   const [selectedAnalysis, setSelectedAnalysis] = useState<AnalysisRow | null>(null);
   const [generating, setGenerating] = useState(false);
   const [plan, setPlan] = useState<GlowupPlan | null>(null);
-  const [activeTab, setActiveTab] = useState<"eyeArea" | "cheekbones" | "jawline" | "symmetry" | "faceShape">("eyeArea");
+  const [activeTab, setActiveTab] = useState<"eyeArea" | "cheekbones" | "jawline" | "symmetry" | "faceShape">(
+    "eyeArea",
+  );
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [taskChecks, setTaskChecks] = useState<Record<string, boolean>>({});
   const [progress, setProgress] = useState(0);
@@ -62,9 +64,9 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
 
   const loadingSteps = [
     "Creating improvement plan…",
-    "Personalizing tips…", 
+    "Personalizing tips…",
     "Building weekly tasks…",
-    "Finalizing timeline…"
+    "Finalizing timeline…",
   ];
 
   // Load analysis and generate plan
@@ -73,7 +75,7 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
       try {
         if (!user?.id) return;
         setLoading(true);
-        
+
         // Try to load persisted glowup map state
         const savedState = localStorage.getItem(`${GLOWUP_MAP_STORAGE_KEY}_${user.id}`);
         if (savedState && isInitialLoad) {
@@ -82,18 +84,18 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
             if (parsedState.selectedAnalysis && parsedState.plan) {
               setSelectedAnalysis(parsedState.selectedAnalysis);
               setPlan(parsedState.plan);
-              setActiveTab(parsedState.activeTab || 'eyeArea');
+              setActiveTab(parsedState.activeTab || "eyeArea");
               setTaskChecks(parsedState.taskChecks || {});
               setIsInitialLoad(false);
               setLoading(false);
               return; // Skip loading analyses if we have a saved state
             }
           } catch (e) {
-            console.error('Error parsing saved glowup state:', e);
+            console.error("Error parsing saved glowup state:", e);
             // Continue with normal flow if parsing fails
           }
         }
-        
+
         // Get the last 10 analyses for selection
         const res = await getHistory({ userId: user.id, limit: 10 });
         if (!res.ok) {
@@ -104,8 +106,8 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
         setAnalyses(res.data);
         setIsInitialLoad(false);
       } catch (error) {
-        console.error('Error loading analysis:', error);
-        setErrorMsg('Failed to load analyses.');
+        console.error("Error loading analysis:", error);
+        setErrorMsg("Failed to load analyses.");
       } finally {
         setLoading(false);
       }
@@ -120,7 +122,7 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
         plan,
         activeTab,
         taskChecks,
-        timestamp: Date.now()
+        timestamp: Date.now(),
       };
       localStorage.setItem(`${GLOWUP_MAP_STORAGE_KEY}_${user.id}`, JSON.stringify(stateToSave));
     }
@@ -130,15 +132,15 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
   useEffect(() => {
     let progressTimer: NodeJS.Timeout;
     let stepTimer: NodeJS.Timeout;
-    
+
     if (generating) {
       setProgress(0);
       setCurrentStep(0);
-      
+
       // Progress waypoints: 8% → 28% → 58% → 82%
       const waypoints = [8, 28, 58, 82];
       let currentWaypoint = 0;
-      
+
       const advanceProgress = () => {
         if (currentWaypoint < waypoints.length) {
           setProgress(waypoints[currentWaypoint]);
@@ -146,19 +148,19 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
           progressTimer = setTimeout(advanceProgress, 3200);
         }
       };
-      
+
       // Start progress animation
       progressTimer = setTimeout(advanceProgress, 500);
-      
+
       // Advance steps every 3.2 seconds
       const advanceStep = () => {
-        setCurrentStep(prev => (prev + 1) % loadingSteps.length);
+        setCurrentStep((prev) => (prev + 1) % loadingSteps.length);
         stepTimer = setTimeout(advanceStep, 3200);
       };
-      
+
       stepTimer = setTimeout(advanceStep, 3200);
     }
-    
+
     return () => {
       if (progressTimer) clearTimeout(progressTimer);
       if (stepTimer) clearTimeout(stepTimer);
@@ -186,8 +188,8 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
       setPlan(null);
 
       // Ensure loading UI shows for at least 1.5 seconds
-      const minDisplayTime = new Promise(resolve => setTimeout(resolve, 1500));
-      
+      const minDisplayTime = new Promise((resolve) => setTimeout(resolve, 1500));
+
       const { data, error } = await supabase.functions.invoke("glowup-map", {
         body: { analysis: row.analysis },
       });
@@ -213,18 +215,18 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
 
       // Wait for both the API call and minimum display time
       await minDisplayTime;
-      
+
       setPlan(nextPlan);
       setActiveTab(nextPlan.weakPoints[0]?.key ?? "jawline");
 
       // Reset task checks
       setTaskChecks({});
     } catch (e: any) {
-      console.error('Error generating plan:', e);
+      console.error("Error generating plan:", e);
       setErrorMsg(e?.message ?? "Failed to generate plan");
-      
+
       // Still wait for minimum time even on error
-      const minDisplayTime = new Promise(resolve => setTimeout(resolve, 1500));
+      const minDisplayTime = new Promise((resolve) => setTimeout(resolve, 1500));
       await minDisplayTime;
     } finally {
       setGenerating(false);
@@ -242,7 +244,7 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
     setPlan(null);
     setTaskChecks({});
     setErrorMsg(null);
-    
+
     // Clear saved state when going back to selection
     if (user?.id) {
       localStorage.removeItem(`${GLOWUP_MAP_STORAGE_KEY}_${user.id}`);
@@ -251,9 +253,9 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
 
   // Toggle task completion
   const toggleTask = (taskId: string) => {
-    setTaskChecks(prev => ({
+    setTaskChecks((prev) => ({
       ...prev,
-      [taskId]: !prev[taskId]
+      [taskId]: !prev[taskId],
     }));
   };
 
@@ -262,7 +264,7 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
     const handleStorageCleanup = () => {
       if (!user?.id) {
         // Clear all glowup map states if user is not logged in
-        Object.keys(localStorage).forEach(key => {
+        Object.keys(localStorage).forEach((key) => {
           if (key.startsWith(GLOWUP_MAP_STORAGE_KEY)) {
             localStorage.removeItem(key);
           }
@@ -276,20 +278,20 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
   // Calculate progress for active module
   const calculateProgress = () => {
     let allTasks: string[] = [];
-    
+
     if (activeTab === "symmetry" && plan?.symmetryPlan) {
       allTasks = [...(plan.symmetryPlan.daily || []), ...(plan.symmetryPlan.weekly || [])];
     } else if (activeTab === "faceShape" && plan?.faceShapePlan) {
       allTasks = [...(plan.faceShapePlan.daily || []), ...(plan.faceShapePlan.weekly || [])];
     } else {
-      const activeWeakPoint = plan?.weakPoints?.find(wp => wp.key === activeTab);
+      const activeWeakPoint = plan?.weakPoints?.find((wp) => wp.key === activeTab);
       if (activeWeakPoint) {
         allTasks = [...(activeWeakPoint.daily || []), ...(activeWeakPoint.weekly || [])];
       }
     }
-    
+
     if (allTasks.length === 0) return 0;
-    
+
     const completedTasks = allTasks.filter((task, index) => taskChecks[`${activeTab}-${index}`]).length;
     return Math.round((completedTasks / allTasks.length) * 100);
   };
@@ -297,10 +299,14 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
   // Get difficulty color
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
-      case 'easy': return 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30';
-      case 'medium': return 'bg-yellow-500/15 text-yellow-300 border-yellow-500/30';
-      case 'hard': return 'bg-red-500/15 text-red-300 border-red-500/30';
-      default: return 'bg-slate-500/15 text-slate-300 border-slate-500/30';
+      case "easy":
+        return "bg-emerald-500/15 text-emerald-300 border-emerald-500/30";
+      case "medium":
+        return "bg-yellow-500/15 text-yellow-300 border-yellow-500/30";
+      case "hard":
+        return "bg-red-500/15 text-red-300 border-red-500/30";
+      default:
+        return "bg-slate-500/15 text-slate-300 border-slate-500/30";
     }
   };
 
@@ -309,20 +315,28 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
     const today = new Date();
     const nextWeek = new Date(today);
     nextWeek.setDate(today.getDate() + (7 - today.getDay()));
-    return nextWeek.toLocaleDateString('en-US', { weekday: 'long' });
+    return nextWeek.toLocaleDateString("en-US", { weekday: "long" });
   };
 
   // Get area display name
   const getAreaName = (area: string) => {
     switch (area) {
-      case 'jawline': return 'Jawline';
-      case 'cheekbones': return 'Cheekbones';
-      case 'skin': return 'Skin';
-      case 'eyeArea': return 'Eye Area';
-      case 'attractiveness': return 'Attractiveness';
-      case 'symmetry': return 'Symmetry';
-      case 'faceShape': return 'Face Shape';
-      default: return area;
+      case "jawline":
+        return "Jawline";
+      case "cheekbones":
+        return "Cheekbones";
+      case "skin":
+        return "Skin";
+      case "eyeArea":
+        return "Eye Area";
+      case "attractiveness":
+        return "Attractiveness";
+      case "symmetry":
+        return "Symmetry";
+      case "faceShape":
+        return "Face Shape";
+      default:
+        return area;
     }
   };
 
@@ -370,10 +384,7 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
                     Try again
                   </button>
                 )}
-                <button
-                  onClick={() => setErrorMsg(null)}
-                  className="text-red-400 hover:text-red-300 transition-colors"
-                >
+                <button onClick={() => setErrorMsg(null)} className="text-red-400 hover:text-red-300 transition-colors">
                   ×
                 </button>
               </div>
@@ -386,12 +397,8 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
           <div className="fixed inset-0 bg-gradient-to-br from-black via-slate-950 to-black z-50 flex flex-col items-center justify-center p-4 animate-fade-in">
             {/* Header */}
             <div className="text-center mb-12 animate-slide-up">
-              <h1 className="text-4xl md:text-5xl font-bold text-white mb-3">
-                Glowup Map
-              </h1>
-              <p className="text-slate-400 text-lg">
-                Your personalized transformation plan
-              </p>
+              <h1 className="text-4xl md:text-5xl font-bold text-white mb-3">Glowup Map</h1>
+              <p className="text-slate-400 text-lg">Your personalized transformation pla</p>
             </div>
 
             {/* Hero Circle with Glowing Ring */}
@@ -402,13 +409,13 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
                   <div className="w-full h-full rounded-full bg-black"></div>
                 </div>
               </div>
-              
+
               {/* Avatar */}
               <div className="relative w-40 h-40 md:w-48 md:h-48 rounded-full bg-gradient-to-br from-cyan-400/20 via-blue-500/30 to-cyan-400/20 p-2 shadow-lg shadow-cyan-500/30">
                 {selectedAnalysis?.image_url ? (
-                  <img 
-                    src={selectedAnalysis.image_url} 
-                    alt="Profile" 
+                  <img
+                    src={selectedAnalysis.image_url}
+                    alt="Profile"
                     className="w-full h-full rounded-full object-cover"
                   />
                 ) : (
@@ -423,31 +430,27 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
             <div className="text-center mb-8 animate-fade-in">
               {/* Progress Bar */}
               <div className="w-full max-w-md mx-auto mb-6">
-                <div 
+                <div
                   className="h-3 w-full rounded-full bg-slate-800/60 overflow-hidden shadow-inner"
                   role="progressbar"
                   aria-valuemin={0}
                   aria-valuemax={100}
                   aria-valuenow={progress}
                 >
-                  <div 
+                  <div
                     className="h-full bg-gradient-to-r from-cyan-400 via-blue-500 to-cyan-400 rounded-full transition-all duration-1000 ease-out shadow-lg shadow-cyan-500/30"
                     style={{ width: `${progress}%` }}
                   />
                 </div>
               </div>
-              
+
               {/* Step Text */}
               <div className="min-h-[1.5rem] mb-4">
-                <p className="text-slate-300 text-lg font-medium animate-fade-in">
-                  {loadingSteps[currentStep]}
-                </p>
+                <p className="text-slate-300 text-lg font-medium animate-fade-in">{loadingSteps[currentStep]}</p>
               </div>
-              
+
               {/* Timing Note */}
-              <p className="text-slate-500 text-sm">
-                This usually takes ~30–60 seconds.
-              </p>
+              <p className="text-slate-500 text-sm">This usually takes ~30–60 seconds.</p>
             </div>
           </div>
         )}
@@ -490,7 +493,7 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
                       <div className="flex-shrink-0">
                         {analysisRow.image_url ? (
                           <div className="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-400 via-blue-500 to-blue-600 p-0.5">
-                            <img 
+                            <img
                               src={analysisRow.image_url}
                               alt="Analysis"
                               className="w-full h-full rounded-full object-cover"
@@ -527,7 +530,7 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
           </div>
         ) : (
           /* Step 2: Generated Plan */
-          <div className={`animate-fade-in ${generating ? 'hidden' : ''}`}>
+          <div className={`animate-fade-in ${generating ? "hidden" : ""}`}>
             {/* Avatar */}
             <div className="text-center mb-8 animate-scale-in">
               <div className="relative inline-block">
@@ -535,13 +538,13 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
                 <div className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-400 via-blue-500 to-cyan-400 p-1 animate-pulse shadow-2xl shadow-cyan-500/50">
                   <div className="w-full h-full rounded-full bg-black"></div>
                 </div>
-                
+
                 {/* Avatar image */}
                 <div className="relative w-32 h-32 rounded-full bg-gradient-to-tr from-cyan-400/40 via-blue-500/30 to-cyan-400/40 p-1 shadow-lg shadow-cyan-500/30">
                   {selectedAnalysis.image_url ? (
-                    <img 
-                      src={selectedAnalysis.image_url} 
-                      alt="Profile" 
+                    <img
+                      src={selectedAnalysis.image_url}
+                      alt="Profile"
                       className="w-full h-full rounded-full object-cover"
                     />
                   ) : (
@@ -552,16 +555,15 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
                 </div>
               </div>
             </div>
-            
+
             {/* Potential improvement text */}
             <div className="text-center mb-8">
               <p className="text-slate-300 text-sm">
-                {plan?.maxPotential?.rangeText 
+                {plan?.maxPotential?.rangeText
                   ? `Potential improvement: ${plan.maxPotential.rangeText}`
                   : plan?.maxPotential?.low && plan?.maxPotential?.high
                     ? `Potential improvement: ${plan.maxPotential.low}-${plan.maxPotential.high}`
-                    : 'Potential improvement: Available with optimization'
-                }
+                    : "Potential improvement: Available with optimization"}
               </p>
             </div>
 
@@ -572,37 +574,37 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
                   {/* First row - 3 buttons */}
                   <div className="flex justify-center space-x-2">
                     {[
-                      { key: 'eyeArea', label: 'EYE AREA' },
-                      { key: 'cheekbones', label: 'CHEEKBONES' },
-                      { key: 'jawline', label: 'JAWLINE' }
+                      { key: "eyeArea", label: "EYE AREA" },
+                      { key: "cheekbones", label: "CHEEKBONES" },
+                      { key: "jawline", label: "JAWLINE" },
                     ].map((tab) => (
                       <button
                         key={tab.key}
                         onClick={() => setActiveTab(tab.key as any)}
                         className={`px-3 py-2 rounded-full text-xs font-semibold transition-all duration-300 transform hover:scale-105 ${
                           activeTab === tab.key
-                            ? 'bg-gradient-to-r from-cyan-400 to-blue-500 text-white shadow-lg shadow-cyan-500/30'
-                            : 'bg-slate-800/50 text-slate-400 hover:text-white hover:bg-slate-700/50 border border-slate-700/30'
+                            ? "bg-gradient-to-r from-cyan-400 to-blue-500 text-white shadow-lg shadow-cyan-500/30"
+                            : "bg-slate-800/50 text-slate-400 hover:text-white hover:bg-slate-700/50 border border-slate-700/30"
                         }`}
                       >
                         {tab.label}
                       </button>
                     ))}
                   </div>
-                  
+
                   {/* Second row - 2 buttons */}
                   <div className="flex justify-center space-x-2">
                     {[
-                      { key: 'symmetry', label: 'SYMMETRY' },
-                      { key: 'faceShape', label: 'FACE SHAPE' }
+                      { key: "symmetry", label: "SYMMETRY" },
+                      { key: "faceShape", label: "FACE SHAPE" },
                     ].map((tab) => (
                       <button
                         key={tab.key}
                         onClick={() => setActiveTab(tab.key as any)}
                         className={`px-3 py-2 rounded-full text-xs font-semibold transition-all duration-300 transform hover:scale-105 ${
                           activeTab === tab.key
-                            ? 'bg-gradient-to-r from-cyan-400 to-blue-500 text-white shadow-lg shadow-cyan-500/30'
-                            : 'bg-slate-800/50 text-slate-400 hover:text-white hover:bg-slate-700/50 border border-slate-700/30'
+                            ? "bg-gradient-to-r from-cyan-400 to-blue-500 text-white shadow-lg shadow-cyan-500/30"
+                            : "bg-slate-800/50 text-slate-400 hover:text-white hover:bg-slate-700/50 border border-slate-700/30"
                         }`}
                       >
                         {tab.label}
@@ -612,7 +614,6 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
                 </div>
               </div>
             )}
-
 
             {/* Main Card */}
             <div className="bg-slate-800/60 backdrop-blur-sm rounded-3xl p-8 border border-blue-500/20 hover:border-blue-500/30 transition-all duration-300 animate-slide-up">
@@ -634,34 +635,34 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
                       score: plan.symmetryPlan.baseline,
                       explanation: plan.symmetryPlan.explanation,
                       daily: plan.symmetryPlan.daily || [],
-                      weekly: plan.symmetryPlan.weekly || []
+                      weekly: plan.symmetryPlan.weekly || [],
                     };
                   } else if (activeTab === "faceShape" && plan.faceShapePlan) {
                     cardData = {
                       title: plan.faceShapePlan.title || "Face Shape",
                       explanation: plan.faceShapePlan.explanation,
                       daily: plan.faceShapePlan.daily || [],
-                      weekly: plan.faceShapePlan.weekly || []
+                      weekly: plan.faceShapePlan.weekly || [],
                     };
                   } else {
-                    const activeWeakPoint = plan.weakPoints?.find(wp => wp.key === activeTab);
+                    const activeWeakPoint = plan.weakPoints?.find((wp) => wp.key === activeTab);
                     if (activeWeakPoint) {
-                     // Use weakPoint score if available, otherwise fallback to analysis scores
-                     let fallbackScore: number | undefined;
-                     if (activeTab === 'eyeArea') {
-                       fallbackScore = selectedAnalysis.analysis?.eyeArea;
-                     } else if (activeTab === 'cheekbones') {
-                       fallbackScore = selectedAnalysis.analysis?.cheekbones;
-                     } else if (activeTab === 'jawline') {
-                       fallbackScore = selectedAnalysis.analysis?.jawline;
-                     }
+                      // Use weakPoint score if available, otherwise fallback to analysis scores
+                      let fallbackScore: number | undefined;
+                      if (activeTab === "eyeArea") {
+                        fallbackScore = selectedAnalysis.analysis?.eyeArea;
+                      } else if (activeTab === "cheekbones") {
+                        fallbackScore = selectedAnalysis.analysis?.cheekbones;
+                      } else if (activeTab === "jawline") {
+                        fallbackScore = selectedAnalysis.analysis?.jawline;
+                      }
 
                       cardData = {
                         title: activeWeakPoint.label || getAreaName(activeTab),
-                       score: activeWeakPoint.score ?? fallbackScore,
+                        score: activeWeakPoint.score ?? fallbackScore,
                         explanation: activeWeakPoint.explanation,
                         daily: activeWeakPoint.daily || [],
-                        weekly: activeWeakPoint.weekly || []
+                        weekly: activeWeakPoint.weekly || [],
                       };
                     }
                   }
@@ -671,9 +672,11 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
                       <div className="text-center py-16">
                         <h3 className="text-2xl font-bold text-white mb-4">No Data Available</h3>
                         <p className="text-slate-400 mb-6">
-                          {activeTab === "symmetry" ? "No symmetry data available." : 
-                           activeTab === "faceShape" ? "No face shape data available." : 
-                           "No data available for this area."}
+                          {activeTab === "symmetry"
+                            ? "No symmetry data available."
+                            : activeTab === "faceShape"
+                              ? "No face shape data available."
+                              : "No data available for this area."}
                         </p>
                       </div>
                     );
@@ -705,7 +708,7 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
                           <span className="text-cyan-400 font-bold text-xl">{progress}%</span>
                         </div>
                         <div className="h-3 w-full rounded-full bg-white/10 overflow-hidden">
-                          <div 
+                          <div
                             className="h-3 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 transition-all duration-500 shadow-lg shadow-cyan-500/30"
                             style={{ width: `${progress}%` }}
                           />
@@ -718,18 +721,25 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
                           <h3 className="text-white font-bold text-xl mb-4">Daily Checklist</h3>
                           <div className="space-y-4">
                             {cardData.daily.map((task, index) => (
-                              <div key={index} className="flex items-start space-x-4 p-4 bg-slate-700/30 rounded-xl hover:bg-slate-700/40 transition-colors">
+                              <div
+                                key={index}
+                                className="flex items-start space-x-4 p-4 bg-slate-700/30 rounded-xl hover:bg-slate-700/40 transition-colors"
+                              >
                                 <button
                                   onClick={() => toggleTask(`${activeTab}-daily-${index}`)}
                                   className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${
                                     taskChecks[`${activeTab}-daily-${index}`]
-                                      ? 'bg-cyan-500 border-cyan-500 shadow-lg shadow-cyan-500/30'
-                                      : 'border-slate-500 hover:border-cyan-400'
+                                      ? "bg-cyan-500 border-cyan-500 shadow-lg shadow-cyan-500/30"
+                                      : "border-slate-500 hover:border-cyan-400"
                                   }`}
                                 >
                                   {taskChecks[`${activeTab}-daily-${index}`] && (
                                     <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                      <path
+                                        fillRule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clipRule="evenodd"
+                                      />
                                     </svg>
                                   )}
                                 </button>
@@ -751,18 +761,25 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
                           </div>
                           <div className="space-y-4">
                             {cardData.weekly.map((task, index) => (
-                              <div key={index} className="flex items-start space-x-4 p-4 bg-slate-700/30 rounded-xl hover:bg-slate-700/40 transition-colors">
+                              <div
+                                key={index}
+                                className="flex items-start space-x-4 p-4 bg-slate-700/30 rounded-xl hover:bg-slate-700/40 transition-colors"
+                              >
                                 <button
                                   onClick={() => toggleTask(`${activeTab}-weekly-${index}`)}
                                   className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${
                                     taskChecks[`${activeTab}-weekly-${index}`]
-                                      ? 'bg-cyan-500 border-cyan-500 shadow-lg shadow-cyan-500/30'
-                                      : 'border-slate-500 hover:border-cyan-400'
+                                      ? "bg-cyan-500 border-cyan-500 shadow-lg shadow-cyan-500/30"
+                                      : "border-slate-500 hover:border-cyan-400"
                                   }`}
                                 >
                                   {taskChecks[`${activeTab}-weekly-${index}`] && (
                                     <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                      <path
+                                        fillRule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clipRule="evenodd"
+                                      />
                                     </svg>
                                   )}
                                 </button>
@@ -792,7 +809,7 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
                 <div className="text-center py-16">
                   <h3 className="text-2xl font-bold text-white mb-4">Unable to Generate Plan</h3>
                   <p className="text-slate-400 mb-6">
-                    {errorMsg || 'Something went wrong while generating your glowup plan.'}
+                    {errorMsg || "Something went wrong while generating your glowup plan."}
                   </p>
                   <div className="flex space-x-4 justify-center">
                     <button
@@ -808,7 +825,7 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
           </div>
         )}
       </div>
-      
+
       {/* Custom CSS for animations */}
       <style jsx>{`
         .animate-spin-slow {
