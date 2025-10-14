@@ -366,7 +366,7 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
             <h1 className="text-4xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-500 bg-clip-text text-transparent">
               Glowup Map
             </h1>
-            <p className="text-slate-300">Your personalized transformation plan</p>
+            <p className="text-slate-300">Your personalized transformation pln</p>
           </div>
         </div>
 
@@ -398,7 +398,7 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
             {/* Header */}
             <div className="text-center mb-12 animate-slide-up">
               <h1 className="text-4xl md:text-5xl font-bold text-white mb-3">Glowup Map</h1>
-              <p className="text-slate-400 text-lg">Your personalized transformation pla</p>
+              <p className="text-slate-400 text-lg">Your personalized transformation plan</p>
             </div>
 
             {/* Hero Circle with Glowing Ring */}
