@@ -80,14 +80,10 @@ export default function AnalysisPage({ onBack, onNavigate }: AnalysisPageProps) 
         <div className="flex items-center mb-8 pt-4 animate-fade-in">
           <button
             onClick={onBack}
-            className="p-3 bg-slate-800/60 backdrop-blur-sm rounded-2xl border border-slate-700/50 hover:border-blue-500/30 hover:bg-slate-700/60 transition-all duration-300 mr-4 group"
+            className="p-3 bg-slate-800/60 backdrop-blur-sm rounded-2xl border border-slate-700/50 hover:border-blue-500/30 hover:bg-slate-700/60 transition-all duration-300 group"
           >
             <ArrowLeft className="w-5 h-5 text-white group-hover:text-blue-400 transition-colors duration-300" />
           </button>
-          <div>
-            <h1 className="text-3xl font-bold text-white">{t.facialAnalysis}</h1>
-            <p className="text-slate-400">{t.aiPoweredAssessment}</p>
-          </div>
         </div>
 
         {/* Upload Section */}
