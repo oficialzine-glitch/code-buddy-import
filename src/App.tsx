@@ -82,24 +82,38 @@ function App() {
   };
 
   const renderPage = () => {
+    let page;
     switch (currentPage) {
       case 'analysis':
-        return <HomePage onNavigate={setCurrentPage} />;
+        page = <HomePage onNavigate={setCurrentPage} />;
+        break;
       case 'upload':
-        return <AnalysisPage onBack={() => setCurrentPage('analysis')} onNavigate={setCurrentPage} />;
+        page = <AnalysisPage onBack={() => setCurrentPage('analysis')} onNavigate={setCurrentPage} />;
+        break;
       case 'profile':
-        return <ProfilePage onBack={() => setCurrentPage('home')} onNavigate={setCurrentPage} />;
+        page = <ProfilePage onBack={() => setCurrentPage('home')} onNavigate={setCurrentPage} />;
+        break;
       case 'results':
-        return <ResultsPage onNavigate={handleNavigateWithData} />;
+        page = <ResultsPage onNavigate={handleNavigateWithData} />;
+        break;
       case 'analysis-view':
-        return <AnalysisViewPage onBack={() => setCurrentPage('results')} analysisData={analysisData} />;
+        page = <AnalysisViewPage onBack={() => setCurrentPage('results')} analysisData={analysisData} />;
+        break;
       case 'previous-analyses':
-        return <PreviousAnalysesPage onBack={() => setCurrentPage('analysis')} />;
+        page = <PreviousAnalysesPage onBack={() => setCurrentPage('analysis')} />;
+        break;
       case 'glowup-map':
-        return <GlowupMapPage onBack={() => setCurrentPage('home')} />;
+        page = <GlowupMapPage onBack={() => setCurrentPage('home')} />;
+        break;
       default:
-        return <HomePage onNavigate={setCurrentPage} />;
+        page = <HomePage onNavigate={setCurrentPage} />;
     }
+    
+    return (
+      <div key={currentPage} className="animate-fade-in">
+        {page}
+      </div>
+    );
   };
 
   return (
