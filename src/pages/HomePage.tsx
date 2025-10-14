@@ -152,7 +152,7 @@ export default function HomePage({ onNavigate }: HomePageProps) {
       <div className="text-center mb-8">
         <button
           onClick={() => onNavigate('upload')}
-          className="px-8 py-4 bg-gradient-to-r from-cyan-400 via-blue-500 to-blue-600 text-white font-bold text-lg rounded-2xl shadow-lg shadow-cyan-500/50 hover:shadow-cyan-500/70 transition-all duration-300 transform hover:scale-105 active:scale-95 border border-cyan-400/30 hover:border-cyan-300/50"
+          className="px-8 py-4 bg-gradient-to-r from-cyan-400 via-blue-500 to-blue-600 text-white font-bold text-lg rounded-2xl shadow-lg shadow-cyan-500/50 hover:shadow-cyan-500/70 transition-all duration-300 transform hover:scale-105 active:scale-95"
         >
           Get Your Glowup Map
         </button>
