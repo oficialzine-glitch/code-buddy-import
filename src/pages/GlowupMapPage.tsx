@@ -573,15 +573,51 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
               </div>
             </div>
 
-            {/* Potential improvement text */}
-            <div className="text-center mb-8">
-              <p className="text-slate-300 text-sm">
-                {plan?.maxPotential?.rangeText
-                  ? `Potential improvement: ${plan.maxPotential.rangeText}`
-                  : plan?.maxPotential?.low && plan?.maxPotential?.high
-                    ? `Potential improvement: ${plan.maxPotential.low}-${plan.maxPotential.high}`
-                    : "Potential improvement: Available with optimization"}
-              </p>
+            {/* Potential improvement pill meter */}
+            <div className="flex justify-center mb-8 animate-fade-in">
+              <div className="w-full max-w-sm">
+                <div className="text-center mb-3">
+                  <h3 className="text-sm font-medium text-slate-400 uppercase tracking-wider">Potential Improvement</h3>
+                </div>
+                <div className="relative rounded-full bg-gradient-to-r from-slate-800/60 via-slate-800/80 to-slate-800/60 p-1 border border-cyan-500/30 shadow-lg shadow-cyan-500/20">
+                  {/* Glowing background effect */}
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-400/10 via-blue-500/20 to-cyan-400/10 blur-xl"></div>
+                  
+                  {/* Inner container */}
+                  <div className="relative rounded-full bg-gradient-to-r from-slate-900/90 to-slate-800/90 px-6 py-4 backdrop-blur-sm">
+                    <div className="flex items-center justify-between">
+                      {/* Label */}
+                      <div className="flex items-center space-x-3">
+                        <Sparkles className="w-5 h-5 text-cyan-400" />
+                        <span className="text-white font-medium">Score Potential</span>
+                      </div>
+                      
+                      {/* Value display */}
+                      <div className="flex items-center space-x-2">
+                        <div className="text-2xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-500 bg-clip-text text-transparent">
+                          {plan?.maxPotential?.low && plan?.maxPotential?.high
+                            ? `${plan.maxPotential.low}-${plan.maxPotential.high}`
+                            : plan?.maxPotential?.rangeText
+                              ? plan.maxPotential.rangeText
+                              : "85-95"}
+                        </div>
+                        <span className="text-slate-400 text-sm">/100</span>
+                      </div>
+                    </div>
+                    
+                    {/* Progress bar */}
+                    <div className="mt-4 h-2 w-full rounded-full bg-slate-700/50 overflow-hidden">
+                      <div
+                        className="h-full rounded-full bg-gradient-to-r from-cyan-400 via-blue-500 to-cyan-400 shadow-lg shadow-cyan-500/50 transition-all duration-1000"
+                        style={{ 
+                          width: `${plan?.maxPotential?.high || 92}%`,
+                          animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* Tabs */}
