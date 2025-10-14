@@ -366,7 +366,7 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
             <h1 className="text-4xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-500 bg-clip-text text-transparent">
               Glowup Map
             </h1>
-            <p className="text-slate-300">Your personalized transformation pla</p>
+            <p className="text-slate-300">Pick an analysis to generate your glowup map</p>
           </div>
         </div>
 
