@@ -144,7 +144,7 @@ function App() {
               <div className="bg-slate-800/80 backdrop-blur-sm rounded-xl p-1 border border-slate-700/50">
                 <button
                   onClick={() => setCurrentPage('analysis')}
-                  className={`px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200 ${
+                  className={`px-3 py-2 rounded-xl text-xs font-medium transition-all duration-200 ${
                     currentPage === 'analysis' || currentPage === 'home'
                       ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg'
                       : 'text-slate-400 hover:text-white'
@@ -155,7 +155,7 @@ function App() {
                 </button>
                 <button
                   onClick={() => setCurrentPage('glowup-map')}
-                  className={`px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200 ${
+                  className={`px-3 py-2 rounded-xl text-xs font-medium transition-all duration-200 ${
                     currentPage === 'glowup-map'
                       ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg'
                       : 'text-slate-400 hover:text-white'
@@ -166,7 +166,7 @@ function App() {
                 </button>
                 <button
                   onClick={() => setCurrentPage('results')}
-                  className={`px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200 ${
+                  className={`px-3 py-2 rounded-xl text-xs font-medium transition-all duration-200 ${
                     currentPage === 'results'
                       ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg'
                       : 'text-slate-400 hover:text-white'
@@ -177,7 +177,7 @@ function App() {
                 </button>
                 <button
                   onClick={() => setCurrentPage('profile')}
-                  className={`px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200 ${
+                  className={`px-3 py-2 rounded-xl text-xs font-medium transition-all duration-200 ${
                     currentPage === 'profile'
                       ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg'
                       : 'text-slate-400 hover:text-white'
