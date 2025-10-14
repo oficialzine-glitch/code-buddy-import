@@ -96,8 +96,8 @@ async function fileToBase64Data(file: File): Promise<string> {
 export async function analyzeFacialFeatures(file: File, isPremium: boolean = false): Promise<AnalysisResult> {
   const image_base64 = await fileToBase64Data(file);
 
-  // Use different endpoint based on premium status
-  const endpoint = isPremium ? GPT5_ANALYSIS_URL : GPT5_PREVIEW_URL;
+  // All users now use the same full analysis endpoint
+  const endpoint = GPT5_ANALYSIS_URL;
 
   const res = await fetch(endpoint, {
     method: "POST",
