@@ -381,12 +381,14 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
           >
             <ArrowLeft className="w-5 h-5 text-white group-hover:text-blue-400 transition-colors duration-300" />
           </button>
-          <div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-500 bg-clip-text text-transparent">
-              Glowup Map
-            </h1>
-            <p className="text-slate-300">Pick an analysis to generate your glowup map</p>
-          </div>
+          {!selectedAnalysis && (
+            <div>
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-500 bg-clip-text text-transparent">
+                Glowup Map
+              </h1>
+              <p className="text-slate-300">Pick an analysis to generate your glowup map</p>
+            </div>
+          )}
         </div>
 
         {/* Error Banner */}
