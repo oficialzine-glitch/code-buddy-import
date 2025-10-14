@@ -3,6 +3,7 @@ import { ArrowLeft, User, RefreshCw, Sparkles } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 import { getHistory, AnalysisRow } from "../lib/history";
 import { supabase } from "../lib/supabaseClient";
+import ReviewPromptModal from "../components/ReviewPromptModal";
 
 // Local storage key for persisting glowup map state
 const GLOWUP_MAP_STORAGE_KEY = "glowup_map_state";
@@ -61,6 +62,7 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
   const [progress, setProgress] = useState(0);
   const [currentStep, setCurrentStep] = useState(0);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const [showReviewPrompt, setShowReviewPrompt] = useState(false);
 
   const loadingSteps = [
     "Creating improvement plan…",
@@ -68,6 +70,23 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
     "Building weekly tasks…",
     "Finalizing timeline…",
   ];
+
+  // Check if user should see review prompt (first time on glowup page)
+  useEffect(() => {
+    const hasSeenReviewPrompt = localStorage.getItem('hasSeenReviewPrompt');
+    if (!hasSeenReviewPrompt && !loading && selectedAnalysis) {
+      // Show prompt after a short delay for better UX
+      const timer = setTimeout(() => {
+        setShowReviewPrompt(true);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [loading, selectedAnalysis]);
+
+  const handleCloseReviewPrompt = () => {
+    setShowReviewPrompt(false);
+    localStorage.setItem('hasSeenReviewPrompt', 'true');
+  };
 
   // Load analysis and generate plan
   useEffect(() => {
@@ -837,6 +856,12 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
           }
         }
       `}</style>
+
+      {/* Review Prompt Modal */}
+      <ReviewPromptModal
+        isOpen={showReviewPrompt}
+        onClose={handleCloseReviewPrompt}
+      />
     </div>
   );
 }
