@@ -27,6 +27,13 @@ function App() {
   const [logoTapTimer, setLogoTapTimer] = useState<NodeJS.Timeout | null>(null);
   const { user, loading } = useAuth();
 
+  // Redirect authenticated users to home page
+  React.useEffect(() => {
+    if (user && ['intro', 'onboarding', 'auth'].includes(currentPage)) {
+      setCurrentPage('analysis');
+    }
+  }, [user, currentPage]);
+
   // Show loading spinner while checking auth state
   if (loading) {
     return (
