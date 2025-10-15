@@ -5,7 +5,7 @@ import GradientButton from '../components/GradientButton';
 import PremiumModal from '../components/PremiumModal';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useAuth } from '../contexts/AuthContext';
-import appFotoImage from '../assets/phone-mockup.png';
+import appFotoImage from '../assets/neon-face-scan.png';
 import mapImage from '../assets/map.webp';
 
 interface HomePageProps {
