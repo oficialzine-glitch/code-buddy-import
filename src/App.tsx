@@ -119,7 +119,7 @@ function App() {
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-black via-slate-950 to-black">
       {/* Top Navigation Bar */}
-      {!['glowup-map', 'upload'].includes(currentPage) && (
+      {!['glowup-map', 'upload', 'profile'].includes(currentPage) && (
         <div className="flex justify-between items-center mb-4 pt-4 px-4">
           {/* App Name - Top Left */}
           <div>
