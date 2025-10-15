@@ -79,7 +79,9 @@ export default function AnalysisResults({ analysis, imageUrl, isPremium = false,
         {analysis.scores?.map((scoreItem: any) => {
           const isOverall = scoreItem.key === 'overall';
           const isBlurred = !isPremium && !isOverall;
-          const val = Number.isFinite(scoreItem.score) ? Math.round(scoreItem.score) : 0;
+          const actualVal = Number.isFinite(scoreItem.score) ? Math.round(scoreItem.score) : 0;
+          // For free users, show placeholder value of 70 for premium rings (not overall)
+          const val = isBlurred ? 70 : actualVal;
           const pct = Math.max(0, Math.min(100, val));
           const CIRC = 2 * Math.PI * 40;
 
@@ -90,7 +92,7 @@ export default function AnalysisResults({ analysis, imageUrl, isPremium = false,
               onClick={isBlurred ? handlePremiumFeatureClick : undefined}
             >
               {isBlurred && (
-                <div className="absolute inset-0 bg-black/85 backdrop-blur-3xl rounded-3xl flex items-center justify-center z-10">
+                <div className="absolute inset-0 bg-black/70 backdrop-blur-2xl rounded-3xl flex items-center justify-center z-10">
                   <div className="text-center">
                     <Crown className="w-7 h-7 text-yellow-400 mx-auto mb-1" strokeWidth={2.5} />
                     <p className="text-yellow-400 font-bold text-xs">Premium</p>
