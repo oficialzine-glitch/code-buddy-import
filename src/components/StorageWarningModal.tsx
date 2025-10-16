@@ -36,7 +36,7 @@ export default function StorageWarningModal({ isOpen, onClose }: StorageWarningM
 
         <button
           onClick={onClose}
-          className="w-full bg-gradient-to-r from-cyan-400 to-blue-500 text-white font-semibold py-3 rounded-lg hover:shadow-lg hover:shadow-cyan-500/50 transition-all"
+          className="w-full bg-gradient-to-r from-cyan-400 to-blue-500 text-white font-semibold py-3 rounded-xl hover:shadow-lg hover:shadow-cyan-500/50 transition-all"
         >
           Got it
         </button>
