@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useEffect } from 'react';
-import { ArrowLeft, Lightbulb } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import LoadingSpinner from '../components/LoadingSpinner';
 import AnalysisResults from '../components/AnalysisResults';
 import PremiumModal from '../components/PremiumModal';
@@ -102,28 +102,22 @@ export default function AnalysisPage({ onBack, onNavigate }: AnalysisPageProps) 
               <img
                 src={exampleSelfie}
                 alt="Example selfie"
-                className="w-full h-[500px] object-cover rounded-3xl"
+                className="w-full h-auto object-contain rounded-3xl"
               />
-            </div>
-
-            {/* Lighting Tip */}
-            <div className="flex items-center gap-3 text-slate-300">
-              <Lightbulb className="w-5 h-5 text-yellow-400" />
-              <span>Make sure your face is well lit</span>
             </div>
 
             {/* Action Buttons */}
             <div className="space-y-4">
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="w-full py-5 bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white text-xl font-bold rounded-full transition-all duration-300 shadow-lg"
+                className="w-full py-5 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white text-xl font-bold rounded-full transition-all duration-300 shadow-lg"
               >
                 Upload from library
               </button>
               
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="w-full py-5 bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white text-xl font-bold rounded-full transition-all duration-300 shadow-lg"
+                className="w-full py-5 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white text-xl font-bold rounded-full transition-all duration-300 shadow-lg"
               >
                 Take a selfie
               </button>
