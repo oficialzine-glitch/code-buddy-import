@@ -1,20 +1,14 @@
 // src/lib/supabaseClient.ts
 import { createClient } from "@supabase/supabase-js";
 
-// Use external Supabase project via environment variables
-const url = import.meta.env.VITE_SUPABASE_URL as string;
-const anon = (import.meta.env.VITE_SUPABASE_ANON_KEY || import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY) as string;
+// Use your external Supabase project
+const SUPABASE_URL = "https://hebwatwkpszebonmrige.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhlYndhdHdrcHN6ZWJvbm1yaWdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUyMjkyNzQsImV4cCI6MjA3MDgwNTI3NH0.8nzmRDHCn5Z8deJ5hHOAeSf4K80GkzXd-sisVLikE64";
 
-if (!url || !anon) {
-  // Fail fast to make configuration issues obvious during build/runtime
-  throw new Error("Missing VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY in environment.");
-}
-
-export const supabase = createClient(url, anon, {
+export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   auth: {
     storage: localStorage,
     persistSession: true,
     autoRefreshToken: true,
-    detectSessionInUrl: false,
-  },
+  }
 });

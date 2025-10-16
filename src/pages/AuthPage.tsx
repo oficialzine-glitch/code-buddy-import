@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Mail, Lock, Eye, EyeOff, Sparkles } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import SupabaseDebug from '../components/SupabaseDebug';
 
 interface AuthPageProps {
   onBack: () => void;
