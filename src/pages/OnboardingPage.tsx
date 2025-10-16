@@ -163,8 +163,8 @@ export default function OnboardingPage({ onComplete }: OnboardingPageProps) {
     return (
       <div className="h-screen bg-gradient-to-br from-black via-slate-950 to-black relative overflow-hidden flex items-center justify-center p-6">
         {/* Animated gradient orbs */}
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-bl from-cyan-500/20 via-blue-600/15 to-transparent rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-blue-500/15 via-cyan-400/10 to-transparent rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+        <div className="pointer-events-none absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-bl from-cyan-500/20 via-blue-600/15 to-transparent rounded-full blur-3xl animate-pulse"></div>
+        <div className="pointer-events-none absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-blue-500/15 via-cyan-400/10 to-transparent rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
 
         <div className="text-center max-w-md mx-auto relative z-10">
           {/* Success animation circle */}
@@ -233,8 +233,8 @@ export default function OnboardingPage({ onComplete }: OnboardingPageProps) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-slate-950 to-black relative overflow-hidden flex flex-col">
       {/* Blue gradient overlay */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-blue-600/20 via-cyan-500/10 to-transparent rounded-full blur-3xl"></div>
-      <div className="absolute top-10 right-10 w-64 h-64 bg-gradient-to-bl from-cyan-400/15 via-blue-500/8 to-transparent rounded-full blur-2xl"></div>
+      <div className="pointer-events-none absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-blue-600/20 via-cyan-500/10 to-transparent rounded-full blur-3xl"></div>
+      <div className="pointer-events-none absolute top-10 right-10 w-64 h-64 bg-gradient-to-bl from-cyan-400/15 via-blue-500/8 to-transparent rounded-full blur-2xl"></div>
       
       {/* Progress Bar */}
       <div className="w-full p-4 pt-8">
@@ -249,7 +249,7 @@ export default function OnboardingPage({ onComplete }: OnboardingPageProps) {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col justify-center px-4 pb-20">
+      <div className="flex-1 flex flex-col justify-center px-4 pb-20 relative z-10">
         <div className="max-w-sm mx-auto w-full">
           {/* Question Header */}
           <div className="text-center mb-8 animate-fade-in">
