@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Mail, Lock, Eye, EyeOff, Sparkles } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import SupabaseDebug from '../components/SupabaseDebug';
+import TermsOfServiceModal from '../components/TermsOfServiceModal';
 
 interface AuthPageProps {
   onBack: () => void;
@@ -15,6 +16,7 @@ export default function AuthPage({ onBack }: AuthPageProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [showTerms, setShowTerms] = useState(false);
 
   const { signIn, signUp, signInWithGoogle } = useAuth();
 
@@ -128,6 +130,18 @@ export default function AuthPage({ onBack }: AuthPageProps) {
             {loading ? 'Processing...' : 'Get Started'}
           </button>
 
+          {/* Terms of Service Text */}
+          <p className="text-center text-xs text-slate-400 mt-3">
+            By signing up you are accepting our{' '}
+            <button
+              type="button"
+              onClick={() => setShowTerms(true)}
+              className="text-cyan-400 hover:text-cyan-300 underline transition-colors"
+            >
+              terms of service
+            </button>
+          </p>
+
           {/* Forgot Password (Sign In Only) */}
           {!isSignUp && (
             <div className="text-center">
@@ -194,6 +208,9 @@ export default function AuthPage({ onBack }: AuthPageProps) {
           </button>
         </div>
       </div>
+
+      {/* Terms of Service Modal */}
+      <TermsOfServiceModal isOpen={showTerms} onClose={() => setShowTerms(false)} />
     </div>
   );
 }
