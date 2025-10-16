@@ -109,15 +109,9 @@ export default function ResultsPage({ onNavigate }: ResultsPageProps) {
       <div className="max-w-4xl mx-auto">
         {analyses.length > 0 && (
           /* Header */
-          <div className="flex items-center justify-between mb-8 pt-4 animate-fade-in">
-            <div>
-              <h1 className="text-3xl font-bold text-white">Analysis Results</h1>
-              <p className="text-slate-400">View your facial analysis results</p>
-            </div>
-            <div className="text-right">
-              <div className="text-2xl font-bold text-white">{analyses.length}</div>
-              <div className="text-slate-400 text-sm">Total Analyses</div>
-            </div>
+          <div className="mb-8 pt-4 animate-fade-in">
+            <h1 className="text-3xl font-bold text-white">Analysis Results</h1>
+            <p className="text-slate-400">View your facial analysis results</p>
           </div>
         )}
 
@@ -212,6 +206,12 @@ export default function ResultsPage({ onNavigate }: ResultsPageProps) {
                   </div>
                 </div>
               ))}
+            </div>
+
+            {/* Total Analyses Count - Bottom Left */}
+            <div className="fixed bottom-20 left-4 bg-slate-800/80 backdrop-blur-sm rounded-2xl p-4 border border-slate-700/50 shadow-lg animate-fade-in">
+              <div className="text-2xl font-bold text-white">{analyses.length}</div>
+              <div className="text-slate-400 text-sm">Total Analyses</div>
             </div>
           </>
         )}
