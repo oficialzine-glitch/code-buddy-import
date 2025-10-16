@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { User, RefreshCw, Sparkles } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 import { getHistory, AnalysisRow } from "../lib/history";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "../lib/supabaseClient";
 import PremiumModal from "../components/PremiumModal";
 import ReviewPromptModal from "../components/ReviewPromptModal";
 

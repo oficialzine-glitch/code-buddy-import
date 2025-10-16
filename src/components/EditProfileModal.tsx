@@ -3,7 +3,7 @@ import { X, User, Mail, Globe, Save } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { getHistory } from '../lib/history';
-import { supabase } from '@/integrations/supabase/client';
+import { supabase } from '../lib/supabaseClient';
 import GradientButton from './GradientButton';
 
 interface EditProfileModalProps {
