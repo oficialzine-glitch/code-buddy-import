@@ -3,10 +3,11 @@ import { Camera, ArrowLeft, Upload } from 'lucide-react';
 import LoadingSpinner from '../components/LoadingSpinner';
 import AnalysisResults from '../components/AnalysisResults';
 import PremiumModal from '../components/PremiumModal';
+import StorageWarningModal from '../components/StorageWarningModal';
 import { useImageProcessing } from '../hooks/useImageProcessing';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useAuth } from '../contexts/AuthContext';
-import { saveAnalysis } from '../lib/history';
+import { saveAnalysis, checkStorageLimit } from '../lib/history';
 
 interface AnalysisPageProps {
   onBack: () => void;
@@ -18,6 +19,7 @@ type PageType = 'intro' | 'onboarding' | 'home' | 'analysis' | 'upload' | 'resul
 export default function AnalysisPage({ onBack, onNavigate }: AnalysisPageProps) {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [showPremiumModal, setShowPremiumModal] = useState(false);
+  const [showStorageWarning, setShowStorageWarning] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { isPremium, user, canStartAnalysis } = useAuth();
@@ -31,20 +33,36 @@ export default function AnalysisPage({ onBack, onNavigate }: AnalysisPageProps) 
     setSelectedImage(url);
     
     try {
+      // Check storage limit for premium users before analysis
+      if (user && isPremium) {
+        const { atLimit } = await checkStorageLimit({ userId: user.id });
+        if (atLimit) {
+          setShowStorageWarning(true);
+        }
+      }
+
       const result = await analyzeImage(file, isPremium);
       
       // Save analysis to history after successful completion
       if (result && user) {
         try {
-          const saveResult = await saveAnalysis({
-            userId: user.id,
-            imageUrl: url,
-            analysis: result
-          });
-          if (saveResult.ok) {
-            console.log('Analysis saved to history successfully');
+          // Check storage limit before saving
+          const { atLimit } = await checkStorageLimit({ userId: user.id });
+          
+          if (!atLimit) {
+            const saveResult = await saveAnalysis({
+              userId: user.id,
+              imageUrl: url,
+              analysis: result
+            });
+            if (saveResult.ok) {
+              console.log('Analysis saved to history successfully');
+            } else {
+              console.error('Failed to save analysis:', saveResult.error);
+            }
           } else {
-            console.error('Failed to save analysis:', saveResult.error);
+            // Show warning if at limit (analysis still shown, just not saved)
+            setShowStorageWarning(true);
           }
         } catch (error) {
           console.error('Failed to save analysis to history:', error);
@@ -199,6 +217,7 @@ export default function AnalysisPage({ onBack, onNavigate }: AnalysisPageProps) 
       </div>
 
       <PremiumModal isOpen={showPremiumModal} onClose={() => setShowPremiumModal(false)} />
+      <StorageWarningModal isOpen={showStorageWarning} onClose={() => setShowStorageWarning(false)} />
     </div>
   );
 }

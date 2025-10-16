@@ -2,6 +2,7 @@
 import { supabase } from "./supabaseClient";
 
 const TABLE = "facial_analyses";
+const MAX_STORED_ANALYSES = 10;
 
 export type AnalysisRow = {
   id: string;
@@ -47,6 +48,22 @@ export async function saveAnalysis(opts: { userId: string; imageUrl?: string | n
   }
 
   return { ok: true };
+}
+
+export async function checkStorageLimit(opts: { userId: string }): Promise<{ atLimit: boolean; count: number }> {
+  const { userId } = opts;
+  const { data, error } = await supabase
+    .from(TABLE)
+    .select("id", { count: 'exact' })
+    .eq("user_id", userId);
+
+  if (error) {
+    console.error("Error checking storage limit:", error);
+    return { atLimit: false, count: 0 };
+  }
+
+  const count = data?.length || 0;
+  return { atLimit: count >= MAX_STORED_ANALYSES, count };
 }
 
 export async function getHistory(opts: { userId: string; limit?: number }) {
