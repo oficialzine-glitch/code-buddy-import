@@ -148,7 +148,7 @@ export default function AnalysisPage({ onBack, onNavigate }: AnalysisPageProps) 
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold rounded-full transition-all duration-300 shadow-lg shadow-blue-500/50"
+                  className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-500 hover:to-blue-600 text-white font-semibold rounded-full transition-all duration-300 shadow-lg shadow-cyan-500/50"
                 >
                   <Upload className="w-4 h-4 animate-bounce" />
                   Choose File

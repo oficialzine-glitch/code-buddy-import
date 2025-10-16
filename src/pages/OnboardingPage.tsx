@@ -273,7 +273,7 @@ export default function OnboardingPage({ onComplete }: OnboardingPageProps) {
                   onTouchStart={() => handleOptionClick(option.id)}
                   className={`w-full p-4 rounded-xl text-center font-medium text-base border-2 pointer-events-auto transition-all duration-150 active:scale-95 ${
                     selected
-                      ? 'bg-gradient-to-r from-cyan-400 to-blue-500 text-white border-cyan-400 shadow-lg shadow-cyan-500/30'
+                      ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-white border-cyan-400 shadow-lg shadow-cyan-500/20'
                       : touchedButton === option.id
                       ? 'bg-slate-700/50 text-white border-slate-600/50 scale-95'
                       : 'bg-slate-800/40 text-slate-300 border-slate-700/50'
