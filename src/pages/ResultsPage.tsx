@@ -207,12 +207,6 @@ export default function ResultsPage({ onNavigate }: ResultsPageProps) {
                 </div>
               ))}
             </div>
-
-            {/* Total Analyses Count - Bottom Left */}
-            <div className="mt-8 animate-fade-in">
-              <div className="text-2xl font-bold text-white">{analyses.length}</div>
-              <div className="text-slate-400 text-sm">Total Analyses</div>
-            </div>
           </>
         )}
       </div>
