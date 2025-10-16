@@ -161,13 +161,11 @@ export default function AnalysisPage({ onBack, onNavigate }: AnalysisPageProps) 
               ref={fileInputRef}
               type="file"
               accept="image/*"
-              capture="environment"
               onChange={(e) => {
                 const file = e.target.files?.[0];
                 if (file) handleFileSelect(file);
               }}
               className="hidden"
-              aria-label="Upload photo"
             />
           </div>
         )}
