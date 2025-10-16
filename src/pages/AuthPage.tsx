@@ -132,7 +132,7 @@ export default function AuthPage({ onBack }: AuthPageProps) {
 
           {/* Terms of Service Text */}
           <p className="text-center text-xs text-slate-400 mt-3">
-            By signing up you are accepting our{' '}
+            By {isSignUp ? 'signing up' : 'signing in'} you are accepting our{' '}
             <button
               type="button"
               onClick={() => setShowTerms(true)}
