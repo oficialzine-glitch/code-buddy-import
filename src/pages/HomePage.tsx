@@ -19,7 +19,7 @@ export default function HomePage({ onNavigate }: HomePageProps) {
   const [percentile, setPercentile] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const { t } = useLanguage();
-  const { user } = useAuth();
+  const { user, isPremium, canStartAnalysis, syncFreeAnalysisCount } = useAuth();
 
   // Function to calculate percentile based on best score
   const calculatePercentile = (score: number): number => {
@@ -48,7 +48,11 @@ export default function HomePage({ onNavigate }: HomePageProps) {
         // Load analysis history to get count and best score
         const { ok, data } = await getHistory({ userId: user.id, limit: 100 });
         if (ok && data) {
-          setAnalysisCount(data.length);
+          const count = data.length;
+          setAnalysisCount(count);
+          
+          // Sync the local analysis count to ensure consistency
+          syncFreeAnalysisCount(count);
           
           // Find the best overall score
           if (data.length > 0) {
@@ -100,7 +104,13 @@ export default function HomePage({ onNavigate }: HomePageProps) {
       {/* Start Analysis Button */}
       <div className="text-center mb-8">
         <button
-          onClick={() => onNavigate('upload')}
+          onClick={() => {
+            if (isPremium || canStartAnalysis()) {
+              onNavigate('upload');
+            } else {
+              setShowPremiumModal(true);
+            }
+          }}
           className="px-8 py-4 bg-gradient-to-r from-cyan-400 via-blue-500 to-blue-600 text-white font-bold text-lg rounded-2xl shadow-lg shadow-blue-500/50 hover:shadow-blue-500/70 transition-all duration-300 transform hover:scale-105 active:scale-95 animate-pulse-glow"
         >
           {t.startAIAnalysis}
@@ -151,7 +161,13 @@ export default function HomePage({ onNavigate }: HomePageProps) {
       {/* Glowup Map Button */}
       <div className="text-center mb-8">
         <button
-          onClick={() => onNavigate('upload')}
+          onClick={() => {
+            if (isPremium || canStartAnalysis()) {
+              onNavigate('upload');
+            } else {
+              setShowPremiumModal(true);
+            }
+          }}
           className="px-8 py-4 bg-gradient-to-r from-cyan-400 via-blue-500 to-blue-600 text-white font-bold text-lg rounded-2xl shadow-lg shadow-cyan-500/50 hover:shadow-cyan-500/70 transition-all duration-300 transform hover:scale-105 active:scale-95"
         >
           Get Your Glowup Map

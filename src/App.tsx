@@ -28,7 +28,7 @@ function App() {
   const [logoTapCount, setLogoTapCount] = useState(0);
   const [logoTapTimer, setLogoTapTimer] = useState<NodeJS.Timeout | null>(null);
   const [analysisCount, setAnalysisCount] = useState(0);
-  const { user, loading } = useAuth();
+  const { user, loading, isPremium, canStartAnalysis } = useAuth();
 
   // Redirect authenticated users to home page
   React.useEffect(() => {
@@ -68,6 +68,12 @@ function App() {
   };
 
   const handleNavigate = (page: PageType) => {
+    // Block navigation to upload page if free user has reached limit
+    if (page === 'upload' && !isPremium && !canStartAnalysis()) {
+      setShowPremiumModal(true);
+      return;
+    }
+    
     // Check if user is coming back from analysis page to home
     // Show review prompt every 3rd analysis (1st, 4th, 7th, etc.)
     if (currentPage === 'upload' && page === 'analysis' && analysisCount > 0 && (analysisCount - 1) % 3 === 0) {

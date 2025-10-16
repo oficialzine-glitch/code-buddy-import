@@ -10,6 +10,7 @@ interface AuthContextType {
   getFreeAnalysisCount: () => number;
   canStartAnalysis: () => boolean;
   incrementAnalysisCount: () => void;
+  syncFreeAnalysisCount: (n: number) => void;
   signIn: (email: string, password: string) => Promise<{ error: AuthError | null }>;
   signUp: (email: string, password: string) => Promise<{ error: AuthError | null }>;
   signInWithGoogle: () => Promise<{ error: AuthError | null }>;
@@ -23,30 +24,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const [isPremium, setIsPremium] = useState(false);
-
-  // Initialize analysis count from database
-  const initializeAnalysisCount = async (user: User | null) => {
-    if (!user) return;
-    
-    const storageKey = `analysis_count_${user.id}`;
-    const existingCount = localStorage.getItem(storageKey);
-    
-    // Only initialize if not already set
-    if (!existingCount) {
-      try {
-        const { data, error } = await supabase
-          .from('facial_analyses')
-          .select('id', { count: 'exact' })
-          .eq('user_id', user.id);
-        
-        if (!error && data) {
-          localStorage.setItem(storageKey, data.length.toString());
-        }
-      } catch (error) {
-        console.error('Error initializing analysis count:', error);
-      }
-    }
-  };
 
   // Check if user has premium access
   const checkPremiumStatus = (user: User | null) => {
@@ -66,7 +43,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setSession(session);
       setUser(session?.user ?? null);
       checkPremiumStatus(session?.user ?? null);
-      initializeAnalysisCount(session?.user ?? null);
       setLoading(false);
     }).catch((error) => {
       console.error('Session check failed:', error);
@@ -85,7 +61,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setSession(session);
       setUser(session?.user ?? null);
       checkPremiumStatus(session?.user ?? null);
-      initializeAnalysisCount(session?.user ?? null);
       setLoading(false);
     });
 
@@ -148,6 +123,17 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     return count < 3;
   };
 
+  // Sync the local analysis count to at least the provided value
+  // This ensures consistency across devices/sessions
+  const syncFreeAnalysisCount = (n: number): void => {
+    if (!user || isPremium) return;
+    
+    const storageKey = `analysis_count_${user.id}`;
+    const currentCount = getFreeAnalysisCount();
+    const newCount = Math.max(currentCount, n);
+    localStorage.setItem(storageKey, newCount.toString());
+  };
+
   const value = {
     user,
     session,
@@ -156,6 +142,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     getFreeAnalysisCount,
     canStartAnalysis,
     incrementAnalysisCount,
+    syncFreeAnalysisCount,
     signIn,
     signUp,
     signInWithGoogle,
