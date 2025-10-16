@@ -24,6 +24,30 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [loading, setLoading] = useState(true);
   const [isPremium, setIsPremium] = useState(false);
 
+  // Initialize analysis count from database
+  const initializeAnalysisCount = async (user: User | null) => {
+    if (!user) return;
+    
+    const storageKey = `analysis_count_${user.id}`;
+    const existingCount = localStorage.getItem(storageKey);
+    
+    // Only initialize if not already set
+    if (!existingCount) {
+      try {
+        const { data, error } = await supabase
+          .from('facial_analyses')
+          .select('id', { count: 'exact' })
+          .eq('user_id', user.id);
+        
+        if (!error && data) {
+          localStorage.setItem(storageKey, data.length.toString());
+        }
+      } catch (error) {
+        console.error('Error initializing analysis count:', error);
+      }
+    }
+  };
+
   // Check if user has premium access
   const checkPremiumStatus = (user: User | null) => {
     if (!user) {
@@ -42,6 +66,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setSession(session);
       setUser(session?.user ?? null);
       checkPremiumStatus(session?.user ?? null);
+      initializeAnalysisCount(session?.user ?? null);
       setLoading(false);
     }).catch((error) => {
       console.error('Session check failed:', error);
@@ -60,6 +85,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setSession(session);
       setUser(session?.user ?? null);
       checkPremiumStatus(session?.user ?? null);
+      initializeAnalysisCount(session?.user ?? null);
       setLoading(false);
     });
 
