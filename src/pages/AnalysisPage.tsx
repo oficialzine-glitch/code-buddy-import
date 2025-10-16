@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Camera, Info, ArrowLeft } from 'lucide-react';
+import { Camera, ArrowLeft, Upload } from 'lucide-react';
 import LoadingSpinner from '../components/LoadingSpinner';
 import AnalysisResults from '../components/AnalysisResults';
 import PremiumModal from '../components/PremiumModal';
@@ -96,67 +96,59 @@ export default function AnalysisPage({ onBack, onNavigate }: AnalysisPageProps) 
   };
 
   return (
-    <div className="min-h-screen bg-black p-6 pb-20">
-      <div className="max-w-2xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-black via-slate-950 to-black p-4 pb-20">
+      <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="flex items-center mb-8 pt-4">
+        <div className="flex items-center mb-8 pt-4 animate-fade-in">
           <button
             onClick={onBack}
-            className="p-3 bg-slate-800/60 backdrop-blur-sm rounded-2xl border border-slate-700/50 hover:border-blue-500/30 hover:bg-slate-700/60 transition-all duration-300 mr-4"
+            className="p-3 bg-slate-800/60 backdrop-blur-sm rounded-2xl border border-slate-700/50 hover:border-blue-500/30 hover:bg-slate-700/60 transition-all duration-300 mr-4 group"
           >
-            <ArrowLeft className="w-5 h-5 text-white" />
+            <ArrowLeft className="w-5 h-5 text-white group-hover:text-blue-400 transition-colors duration-300" />
           </button>
+          <div>
+            <h1 className="text-3xl font-bold text-white">{t.facialAnalysis}</h1>
+            <p className="text-slate-400">{t.aiPoweredAssessment}</p>
+          </div>
         </div>
 
         {/* Upload Section */}
         {!selectedImage && (
-          <div className="space-y-6">
-            <div className="text-center space-y-2">
-              <h1 className="text-4xl font-bold text-cyan-400">Take a front selfie</h1>
-              <p className="text-slate-400">For best results, face the camera directly in good lighting</p>
-            </div>
-
-            {/* Drag and Drop Area */}
+          <div className="bg-gradient-to-br from-slate-800/60 via-blue-900/20 to-slate-800/60 backdrop-blur-sm rounded-3xl p-8 border border-blue-500/20 mb-8 animate-slide-up shadow-lg shadow-blue-500/10">
             <div
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
               className={`border-2 border-dashed rounded-3xl p-12 transition-all ${
-                isDragging ? 'border-cyan-400 bg-cyan-400/10' : 'border-slate-600'
+                isDragging ? 'border-blue-400 bg-blue-400/10' : 'border-slate-600/50'
               }`}
             >
-              <div className="flex flex-col items-center space-y-4">
-                <div className="w-32 h-32 rounded-full bg-slate-800 flex items-center justify-center">
-                  <Camera className="w-16 h-16 text-cyan-400" />
+              <div className="flex flex-col items-center space-y-6">
+                {/* Camera Icon with Gradient Circle */}
+                <div className="relative">
+                  <div className="w-32 h-32 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/50">
+                    <Camera className="w-16 h-16 text-white" />
+                  </div>
                 </div>
-                <p className="text-slate-400 text-lg">No image selected</p>
-                <p className="text-slate-500 text-sm">Drag and drop or use the button below</p>
+
+                {/* Upload Text */}
+                <div className="text-center space-y-3">
+                  <h2 className="text-2xl font-bold text-white">Upload Your Photo</h2>
+                  <p className="text-slate-300 max-w-md">
+                    Drag and drop your photo here, or click to select. For best results, use a clear front-facing photo.
+                  </p>
+                </div>
+
+                {/* Choose File Button */}
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  className="flex items-center gap-2 px-8 py-3 bg-slate-700/80 hover:bg-slate-600/80 text-white font-semibold rounded-full transition-all duration-300 shadow-lg"
+                >
+                  <Upload className="w-5 h-5" />
+                  Choose File
+                </button>
               </div>
             </div>
-
-            {/* Tips Section */}
-            <div className="bg-slate-900/50 border border-slate-700 rounded-2xl p-6">
-              <div className="flex items-start gap-3">
-                <Info className="w-6 h-6 text-cyan-400 flex-shrink-0 mt-1" />
-                <div>
-                  <h3 className="text-cyan-400 font-semibold text-lg mb-3">Tips for best results:</h3>
-                  <ul className="text-slate-300 space-y-2">
-                    <li>• Face the camera directly</li>
-                    <li>• Ensure good, even lighting</li>
-                    <li>• Keep a neutral expression</li>
-                    <li>• Remove glasses or accessories</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            {/* Upload Button */}
-            <button
-              onClick={() => fileInputRef.current?.click()}
-              className="w-full py-4 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white text-lg font-bold rounded-full transition-all duration-300 shadow-lg"
-            >
-              Select Image
-            </button>
 
             {/* Hidden File Input */}
             <input
