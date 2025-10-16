@@ -221,6 +221,7 @@ export default function AnalysisPage({ onBack, onNavigate, onAnalysisComplete }:
                 analysis={analysis}
                 imageUrl={selectedImage}
                 isPremium={isPremium}
+                showPremiumButton={true}
               />
             )}
           </div>

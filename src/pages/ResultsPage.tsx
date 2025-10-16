@@ -96,6 +96,7 @@ export default function ResultsPage({ onNavigate }: ResultsPageProps) {
               analysis={selectedAnalysis.analysis}
               imageUrl={selectedAnalysis.image_url}
               isPremium={isPremium}
+              showPremiumButton={false}
             />
           </div>
         </div>

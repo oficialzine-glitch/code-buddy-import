@@ -6,6 +6,7 @@ type Props = {
   analysis: any;             // exact object from Edge Function (don't reshape)
   imageUrl?: string | null;  // optional; used for the profile preview
   isPremium?: boolean;
+  showPremiumButton?: boolean; // controls if the floating Premium button appears
 };
 
 const FACE_SHAPE_FACTS: Record<string, string[]> = {
@@ -39,7 +40,7 @@ const FACE_SHAPE_FACTS: Record<string, string[]> = {
   ]
 };
 
-export default function AnalysisResults({ analysis, imageUrl, isPremium = false }: Props) {
+export default function AnalysisResults({ analysis, imageUrl, isPremium = false, showPremiumButton = false }: Props) {
   // Extract safe overall score from analysis
   const safeOverallScore = analysis?.overall ?? 0;
   const [showPremiumModal, setShowPremiumModal] = useState(false);
@@ -663,8 +664,8 @@ export default function AnalysisResults({ analysis, imageUrl, isPremium = false 
       })()}
     </div>
 
-    {/* Floating Premium Button - Only for Free Users */}
-    {!isPremium && (
+    {/* Floating Premium Button - Only show for free users on fresh analysis */}
+    {!isPremium && showPremiumButton && (
       <button
         onClick={() => setShowPremiumModal(true)}
         className="fixed bottom-6 right-6 z-30 px-6 py-3 bg-gradient-to-r from-yellow-400 via-yellow-500 to-amber-500 text-white font-bold rounded-full shadow-2xl shadow-yellow-500/50 hover:shadow-yellow-500/70 hover:scale-105 transition-all duration-300 flex items-center space-x-2 animate-bounce-slow"
