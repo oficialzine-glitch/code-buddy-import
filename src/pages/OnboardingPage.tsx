@@ -73,8 +73,10 @@ export default function OnboardingPage({ onComplete }: OnboardingPageProps) {
   const currentQuestion = questions[currentStep];
   const progress = ((currentStep + 1) / questions.length) * 100;
 
-  const handleOptionClick = (optionId: string) => {
-    console.log('Button clicked:', optionId); // Debug log
+  const handleOptionClick = (optionId: string, e?: React.MouseEvent | React.TouchEvent) => {
+    e?.preventDefault();
+    e?.stopPropagation();
+    console.log('Button clicked:', optionId);
     
     if (currentQuestion.multiSelect) {
       const currentSelections = (selectedValues[currentStep] as string[]) || [];
@@ -268,13 +270,18 @@ export default function OnboardingPage({ onComplete }: OnboardingPageProps) {
                 <button
                   key={option.id}
                   type="button"
-                  onClick={() => handleOptionClick(option.id)}
-                  className={`w-full p-4 rounded-xl transition-all duration-200 text-center font-medium text-base border-2 animate-fade-in ${
+                  onClick={(e) => handleOptionClick(option.id, e)}
+                  onTouchEnd={(e) => handleOptionClick(option.id, e)}
+                  className={`w-full p-4 rounded-xl transition-all duration-200 text-center font-medium text-base border-2 animate-fade-in active:scale-95 ${
                     selected
-                      ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-white border-cyan-400 shadow-lg shadow-cyan-500/20 transform scale-[1.02]'
-                      : 'bg-slate-800/40 text-slate-300 border-slate-700/50 hover:bg-slate-700/50 hover:border-slate-600/50 hover:scale-[1.01]'
+                      ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-white border-cyan-400 shadow-lg shadow-cyan-500/20'
+                      : 'bg-slate-800/40 text-slate-300 border-slate-700/50 active:bg-slate-700/50'
                   }`}
-                  style={{ animationDelay: `${index * 0.1}s` }}
+                  style={{ 
+                    animationDelay: `${index * 0.1}s`,
+                    WebkitTapHighlightColor: 'transparent',
+                    touchAction: 'manipulation'
+                  }}
                 >
                   {option.text}
                 </button>
@@ -288,7 +295,12 @@ export default function OnboardingPage({ onComplete }: OnboardingPageProps) {
               <button
                 type="button"
                 onClick={handleBack}
-                className="w-12 h-12 bg-slate-800/60 rounded-full flex items-center justify-center text-slate-300 hover:text-white hover:bg-slate-700/60 transition-all duration-200"
+                onTouchEnd={handleBack}
+                className="w-12 h-12 bg-slate-800/60 rounded-full flex items-center justify-center text-slate-300 active:text-white active:bg-slate-700/60 transition-all duration-200"
+                style={{ 
+                  WebkitTapHighlightColor: 'transparent',
+                  touchAction: 'manipulation'
+                }}
               >
                 <ArrowLeft className="w-5 h-5" />
               </button>
@@ -299,12 +311,17 @@ export default function OnboardingPage({ onComplete }: OnboardingPageProps) {
             <button
               type="button"
               onClick={handleNext}
+              onTouchEnd={handleNext}
               disabled={!canProceed()}
-              className={`px-8 py-3 rounded-full font-bold text-base transition-all duration-300 transform ${
+              className={`px-8 py-3 rounded-full font-bold text-base transition-all duration-300 active:scale-95 ${
                 canProceed()
-                  ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/50 hover:scale-105 active:scale-95'
+                  ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg shadow-cyan-500/30'
                   : 'bg-slate-700/50 text-slate-500 cursor-not-allowed'
               }`}
+              style={{ 
+                WebkitTapHighlightColor: 'transparent',
+                touchAction: 'manipulation'
+              }}
             >
               {currentStep === questions.length - 1 ? 'Complete' : 'Continue'}
             </button>
