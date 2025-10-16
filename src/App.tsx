@@ -27,7 +27,7 @@ function App() {
   const [showCreatorCodeModal, setShowCreatorCodeModal] = useState(false);
   const [logoTapCount, setLogoTapCount] = useState(0);
   const [logoTapTimer, setLogoTapTimer] = useState<NodeJS.Timeout | null>(null);
-  const [hasCompletedFirstAnalysis, setHasCompletedFirstAnalysis] = useState(false);
+  const [analysisCount, setAnalysisCount] = useState(0);
   const { user, loading } = useAuth();
 
   // Redirect authenticated users to home page
@@ -69,14 +69,15 @@ function App() {
 
   const handleNavigate = (page: PageType) => {
     // Check if user is coming back from analysis page to home
-    if (currentPage === 'upload' && page === 'analysis' && hasCompletedFirstAnalysis) {
+    // Show review prompt every 3rd analysis (1st, 4th, 7th, etc.)
+    if (currentPage === 'upload' && page === 'analysis' && analysisCount > 0 && (analysisCount - 1) % 3 === 0) {
       setShowReviewPrompt(true);
     }
     setCurrentPage(page);
   };
 
   const handleAnalysisComplete = () => {
-    setHasCompletedFirstAnalysis(true);
+    setAnalysisCount(prev => prev + 1);
   };
 
   const handleLogoTap = () => {
