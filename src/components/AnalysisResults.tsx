@@ -667,7 +667,7 @@ export default function AnalysisResults({ analysis, imageUrl, isPremium = false 
     {!isPremium && (
       <button
         onClick={() => setShowPremiumModal(true)}
-        className="fixed bottom-6 right-6 z-30 px-6 py-3 bg-gradient-to-r from-yellow-400 via-yellow-500 to-amber-500 text-black font-bold rounded-full shadow-2xl shadow-yellow-500/50 hover:shadow-yellow-500/70 hover:scale-105 transition-all duration-300 flex items-center space-x-2 animate-bounce-slow"
+        className="fixed bottom-6 right-6 z-30 px-6 py-3 bg-gradient-to-r from-yellow-400 via-yellow-500 to-amber-500 text-white font-bold rounded-full shadow-2xl shadow-yellow-500/50 hover:shadow-yellow-500/70 hover:scale-105 transition-all duration-300 flex items-center space-x-2 animate-bounce-slow"
       >
         <Crown className="w-5 h-5" />
         <span>Premium</span>
