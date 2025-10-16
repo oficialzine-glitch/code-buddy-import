@@ -23,7 +23,7 @@ export default function AnalysisPage({ onBack, onNavigate, onAnalysisComplete }:
   const [showStorageWarning, setShowStorageWarning] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { isPremium, user, canStartAnalysis } = useAuth();
+  const { isPremium, user, canStartAnalysis, incrementAnalysisCount } = useAuth();
   const { isAnalyzing, analysis, analyzeImage } = useImageProcessing();
   const { t } = useLanguage();
 
@@ -43,6 +43,11 @@ export default function AnalysisPage({ onBack, onNavigate, onAnalysisComplete }:
       }
 
       const result = await analyzeImage(file, isPremium);
+      
+      // Increment analysis count for free users
+      if (result && !isPremium) {
+        incrementAnalysisCount();
+      }
       
       // Mark first analysis as complete
       if (result && onAnalysisComplete) {
@@ -96,10 +101,10 @@ export default function AnalysisPage({ onBack, onNavigate, onAnalysisComplete }:
     return { grade: 'C', color: 'text-red-400' };
   };
 
-  const handleFileSelect = async (file: File) => {
+  const handleFileSelect = (file: File) => {
     if (file && file.type.startsWith('image/')) {
       // Check if user can start analysis (free users limited to 3)
-      const canAnalyze = await canStartAnalysis();
+      const canAnalyze = canStartAnalysis();
       
       if (!canAnalyze) {
         // Show premium modal if limit reached

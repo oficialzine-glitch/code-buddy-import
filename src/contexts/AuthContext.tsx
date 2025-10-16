@@ -7,8 +7,9 @@ interface AuthContextType {
   session: Session | null;
   loading: boolean;
   isPremium: boolean;
-  getFreeAnalysisCount: () => Promise<number>;
-  canStartAnalysis: () => Promise<boolean>;
+  getFreeAnalysisCount: () => number;
+  canStartAnalysis: () => boolean;
+  incrementAnalysisCount: () => void;
   signIn: (email: string, password: string) => Promise<{ error: AuthError | null }>;
   signUp: (email: string, password: string) => Promise<{ error: AuthError | null }>;
   signInWithGoogle: () => Promise<{ error: AuthError | null }>;
@@ -96,32 +97,28 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     return { error };
   };
 
-  // Get the number of analyses a free user has done
-  const getFreeAnalysisCount = async (): Promise<number> => {
+  // Get the number of analyses a free user has done (from localStorage)
+  const getFreeAnalysisCount = (): number => {
     if (!user || isPremium) return 0;
     
-    try {
-      const { data, error } = await supabase
-        .from('facial_analyses')
-        .select('id', { count: 'exact' })
-        .eq('user_id', user.id);
-      
-      if (error) {
-        console.error('Error getting analysis count:', error);
-        return 0;
-      }
-      
-      return data?.length || 0;
-    } catch (error) {
-      console.error('Error getting analysis count:', error);
-      return 0;
-    }
+    const storageKey = `analysis_count_${user.id}`;
+    const count = localStorage.getItem(storageKey);
+    return count ? parseInt(count, 10) : 0;
+  };
+
+  // Increment the analysis count in localStorage
+  const incrementAnalysisCount = (): void => {
+    if (!user || isPremium) return;
+    
+    const storageKey = `analysis_count_${user.id}`;
+    const currentCount = getFreeAnalysisCount();
+    localStorage.setItem(storageKey, (currentCount + 1).toString());
   };
 
   // Check if user can start a new analysis
-  const canStartAnalysis = async (): Promise<boolean> => {
+  const canStartAnalysis = (): boolean => {
     if (isPremium) return true;
-    const count = await getFreeAnalysisCount();
+    const count = getFreeAnalysisCount();
     return count < 3;
   };
 
@@ -132,6 +129,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     isPremium,
     getFreeAnalysisCount,
     canStartAnalysis,
+    incrementAnalysisCount,
     signIn,
     signUp,
     signInWithGoogle,
