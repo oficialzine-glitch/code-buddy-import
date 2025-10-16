@@ -130,17 +130,19 @@ export default function AuthPage({ onBack }: AuthPageProps) {
             {loading ? 'Processing...' : 'Get Started'}
           </button>
 
-          {/* Terms of Service Text */}
-          <p className="text-center text-xs text-slate-400 mt-3">
-            By {isSignUp ? 'signing up' : 'signing in'} you are accepting our{' '}
-            <button
-              type="button"
-              onClick={() => setShowTerms(true)}
-              className="text-cyan-400 hover:text-cyan-300 underline transition-colors"
-            >
-              terms of service
-            </button>
-          </p>
+          {/* Terms of Service Text - Only show during sign up */}
+          {isSignUp && (
+            <p className="text-center text-xs text-slate-400 mt-3">
+              By signing up you are accepting our{' '}
+              <button
+                type="button"
+                onClick={() => setShowTerms(true)}
+                className="text-cyan-400 hover:text-cyan-300 underline transition-colors"
+              >
+                terms of service
+              </button>
+            </p>
+          )}
 
           {/* Forgot Password (Sign In Only) */}
           {!isSignUp && (
