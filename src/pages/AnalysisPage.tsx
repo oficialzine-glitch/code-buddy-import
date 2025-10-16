@@ -74,74 +74,28 @@ export default function AnalysisPage({ onBack, onNavigate }: AnalysisPageProps) 
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden p-4 pb-20">
-      {/* Animated Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-blue-950/40 to-slate-950"></div>
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-600/20 via-transparent to-transparent"></div>
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-cyan-600/10 via-transparent to-transparent"></div>
-      
-      {/* Floating orbs */}
-      <div className="absolute top-20 left-10 w-72 h-72 bg-blue-500/20 rounded-full blur-3xl animate-pulse"></div>
-      <div className="absolute bottom-20 right-10 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-      
-      <div className="relative max-w-4xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-black via-slate-950 to-black p-4 pb-20">
+      <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="flex items-center justify-between mb-12 pt-4 animate-fade-in">
+        <div className="flex items-center justify-between mb-8 pt-4 animate-fade-in">
           <button
             onClick={onBack}
-            className="p-3 bg-slate-800/80 backdrop-blur-xl rounded-2xl border border-slate-700/50 hover:border-blue-400/50 hover:bg-slate-700/80 transition-all duration-300 group shadow-lg hover:shadow-blue-500/25"
+            className="p-3 bg-slate-800/60 backdrop-blur-sm rounded-2xl border border-slate-700/50 hover:border-blue-500/30 hover:bg-slate-700/60 transition-all duration-300 group"
           >
-            <ArrowLeft className="w-5 h-5 text-slate-300 group-hover:text-blue-400 transition-colors duration-300" />
+            <ArrowLeft className="w-5 h-5 text-white group-hover:text-blue-400 transition-colors duration-300" />
           </button>
           {selectedImage && analysis && (
-            <div className="px-5 py-2.5 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 backdrop-blur-xl rounded-full flex items-center space-x-2 border border-blue-400/40 shadow-lg shadow-blue-500/20">
-              <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse shadow-lg shadow-blue-400/50"></div>
-              <Sparkles className="w-4 h-4 text-blue-400" />
-              <span className="text-blue-300 text-sm font-semibold">AI Analysis</span>
+            <div className="px-4 py-2 bg-blue-500/20 rounded-full flex items-center space-x-2 border border-blue-500/30">
+              <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
+              <span className="text-blue-400 text-sm font-medium">Advanced</span>
             </div>
           )}
         </div>
 
         {/* Upload Section */}
         {!selectedImage && (
-          <div className="relative animate-slide-up">
-            {/* Decorative elements */}
-            <div className="absolute -top-4 -left-4 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl"></div>
-            <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-cyan-500/10 rounded-full blur-2xl"></div>
-            
-            <div className="relative bg-gradient-to-br from-slate-800/80 via-blue-900/30 to-slate-800/80 backdrop-blur-xl rounded-3xl p-10 border border-blue-400/30 shadow-2xl shadow-blue-500/20">
-              {/* Title Section */}
-              <div className="text-center mb-8 space-y-3">
-                <div className="inline-flex items-center space-x-2 px-4 py-2 bg-blue-500/10 rounded-full border border-blue-400/30 mb-4">
-                  <Star className="w-4 h-4 text-blue-400" />
-                  <span className="text-blue-300 text-sm font-medium">AI-Powered Analysis</span>
-                </div>
-                <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent">
-                  Upload Your Photo
-                </h2>
-                <p className="text-slate-400 text-sm max-w-md mx-auto">
-                  Get instant AI-powered facial analysis with detailed insights and recommendations
-                </p>
-              </div>
-              
-              <ImageUpload onImageSelect={handleImageSelect} selectedImage={selectedImage} onClear={handleClearImage} />
-              
-              {/* Features */}
-              <div className="mt-8 grid grid-cols-3 gap-4">
-                <div className="text-center space-y-2 p-4 bg-slate-900/40 rounded-xl border border-slate-700/50">
-                  <Eye className="w-5 h-5 text-cyan-400 mx-auto" />
-                  <p className="text-xs text-slate-400">Face Detection</p>
-                </div>
-                <div className="text-center space-y-2 p-4 bg-slate-900/40 rounded-xl border border-slate-700/50">
-                  <Sparkles className="w-5 h-5 text-blue-400 mx-auto" />
-                  <p className="text-xs text-slate-400">AI Analysis</p>
-                </div>
-                <div className="text-center space-y-2 p-4 bg-slate-900/40 rounded-xl border border-slate-700/50">
-                  <Star className="w-5 h-5 text-cyan-400 mx-auto" />
-                  <p className="text-xs text-slate-400">Instant Results</p>
-                </div>
-              </div>
-            </div>
+          <div className="bg-gradient-to-br from-slate-800/60 via-blue-900/20 to-slate-800/60 backdrop-blur-sm rounded-3xl p-8 border border-blue-500/20 mb-8 animate-slide-up shadow-lg shadow-blue-500/10">
+            <ImageUpload onImageSelect={handleImageSelect} selectedImage={selectedImage} onClear={handleClearImage} />
           </div>
         )}
 
