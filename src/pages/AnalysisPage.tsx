@@ -12,11 +12,12 @@ import { saveAnalysis, checkStorageLimit } from '../lib/history';
 interface AnalysisPageProps {
   onBack: () => void;
   onNavigate?: (page: PageType) => void;
+  onAnalysisComplete?: () => void;
 }
 
 type PageType = 'intro' | 'onboarding' | 'home' | 'analysis' | 'upload' | 'results' | 'profile' | 'auth' | 'analysis-view' | 'previous-analyses' | 'glowup-map' | 'hairstyles';
 
-export default function AnalysisPage({ onBack, onNavigate }: AnalysisPageProps) {
+export default function AnalysisPage({ onBack, onNavigate, onAnalysisComplete }: AnalysisPageProps) {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [showPremiumModal, setShowPremiumModal] = useState(false);
   const [showStorageWarning, setShowStorageWarning] = useState(false);
@@ -42,6 +43,11 @@ export default function AnalysisPage({ onBack, onNavigate }: AnalysisPageProps) 
       }
 
       const result = await analyzeImage(file, isPremium);
+      
+      // Mark first analysis as complete
+      if (result && onAnalysisComplete) {
+        onAnalysisComplete();
+      }
       
       // Save analysis to history after successful completion
       if (result && user) {

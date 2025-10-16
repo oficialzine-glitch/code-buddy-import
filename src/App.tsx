@@ -11,6 +11,7 @@ import PreviousAnalysesPage from './pages/PreviousAnalysesPage';
 import GlowupMapPage from './pages/GlowupMapPage';
 import OnboardingPage from './pages/OnboardingPage';
 import PremiumModal from './components/PremiumModal';
+import ReviewPromptModal from './components/ReviewPromptModal';
 import LoadingSpinner from './components/LoadingSpinner';
 import CreatorCodeModal from './components/CreatorCodeModal';
 import { FacialAnalysis } from './types';
@@ -22,9 +23,11 @@ function App() {
   const [currentPage, setCurrentPage] = useState<PageType>('intro');
   const [analysisData, setAnalysisData] = useState<FacialAnalysis | null>(null);
   const [showPremiumModal, setShowPremiumModal] = useState(false);
+  const [showReviewPrompt, setShowReviewPrompt] = useState(false);
   const [showCreatorCodeModal, setShowCreatorCodeModal] = useState(false);
   const [logoTapCount, setLogoTapCount] = useState(0);
   const [logoTapTimer, setLogoTapTimer] = useState<NodeJS.Timeout | null>(null);
+  const [hasCompletedFirstAnalysis, setHasCompletedFirstAnalysis] = useState(false);
   const { user, loading } = useAuth();
 
   // Redirect authenticated users to home page
@@ -64,6 +67,18 @@ function App() {
     setCurrentPage(page);
   };
 
+  const handleNavigate = (page: PageType) => {
+    // Check if user is coming back from analysis page to home
+    if (currentPage === 'upload' && page === 'analysis' && hasCompletedFirstAnalysis) {
+      setShowReviewPrompt(true);
+    }
+    setCurrentPage(page);
+  };
+
+  const handleAnalysisComplete = () => {
+    setHasCompletedFirstAnalysis(true);
+  };
+
   const handleLogoTap = () => {
     setLogoTapCount(prev => prev + 1);
     
@@ -92,10 +107,10 @@ function App() {
     let page;
     switch (currentPage) {
       case 'analysis':
-        page = <HomePage onNavigate={setCurrentPage} />;
+        page = <HomePage onNavigate={handleNavigate} />;
         break;
       case 'upload':
-        page = <AnalysisPage onBack={() => setCurrentPage('analysis')} onNavigate={setCurrentPage} />;
+        page = <AnalysisPage onBack={() => handleNavigate('analysis')} onNavigate={handleNavigate} onAnalysisComplete={handleAnalysisComplete} />;
         break;
       case 'profile':
         page = <ProfilePage onBack={() => setCurrentPage('home')} onNavigate={setCurrentPage} />;
@@ -223,6 +238,12 @@ function App() {
       <CreatorCodeModal 
         isOpen={showCreatorCodeModal} 
         onClose={() => setShowCreatorCodeModal(false)} 
+      />
+
+      {/* Review Prompt Modal */}
+      <ReviewPromptModal 
+        isOpen={showReviewPrompt} 
+        onClose={() => setShowReviewPrompt(false)} 
       />
     </div>
   );
