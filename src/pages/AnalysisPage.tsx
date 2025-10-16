@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Check, X } from 'lucide-react';
+import { Camera, Info, ArrowLeft } from 'lucide-react';
 import LoadingSpinner from '../components/LoadingSpinner';
 import AnalysisResults from '../components/AnalysisResults';
 import PremiumModal from '../components/PremiumModal';
@@ -7,8 +7,6 @@ import { useImageProcessing } from '../hooks/useImageProcessing';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useAuth } from '../contexts/AuthContext';
 import { saveAnalysis } from '../lib/history';
-import exampleSelfie from '../assets/example-selfie.png';
-import exampleSelfieBad from '../assets/example-selfie-bad.png';
 
 interface AnalysisPageProps {
   onBack: () => void;
@@ -20,27 +18,13 @@ type PageType = 'intro' | 'onboarding' | 'home' | 'analysis' | 'upload' | 'resul
 export default function AnalysisPage({ onBack, onNavigate }: AnalysisPageProps) {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [showPremiumModal, setShowPremiumModal] = useState(false);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { isPremium, user } = useAuth();
   const { isAnalyzing, analysis, analyzeImage } = useImageProcessing();
   const { t } = useLanguage();
 
-  const exampleImages = [
-    { src: exampleSelfie, icon: Check, color: 'text-green-500' },
-    { src: exampleSelfieBad, icon: X, color: 'text-red-500' }
-  ];
-
   useEffect(() => { console.log("MOUNT:", "src/pages/AnalysisPage.tsx"); }, []);
-
-  useEffect(() => {
-    if (!selectedImage) {
-      const interval = setInterval(() => {
-        setCurrentImageIndex((prev) => (prev + 1) % exampleImages.length);
-      }, 5000);
-      return () => clearInterval(interval);
-    }
-  }, [selectedImage, exampleImages.length]);
 
   const handleImageSelect = async (file: File) => {
     const url = URL.createObjectURL(file);
@@ -94,32 +78,84 @@ export default function AnalysisPage({ onBack, onNavigate }: AnalysisPageProps) 
     }
   };
 
-  const CurrentIcon = exampleImages[currentImageIndex].icon;
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file) handleFileSelect(file);
+  };
 
   return (
-    <div className="min-h-screen bg-black p-4 pb-20">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen bg-black p-6 pb-20">
+      <div className="max-w-2xl mx-auto">
+        {/* Header */}
+        <div className="flex items-center mb-8 pt-4">
+          <button
+            onClick={onBack}
+            className="p-3 bg-slate-800/60 backdrop-blur-sm rounded-2xl border border-slate-700/50 hover:border-blue-500/30 hover:bg-slate-700/60 transition-all duration-300 mr-4"
+          >
+            <ArrowLeft className="w-5 h-5 text-white" />
+          </button>
+        </div>
+
         {/* Upload Section */}
         {!selectedImage && (
-          <div className="flex flex-col items-center justify-center min-h-screen space-y-6">
-            {/* Image Placeholder with Overlay */}
-            <div className="relative max-w-sm w-full">
-              <img
-                src={exampleImages[currentImageIndex].src}
-                alt="Example selfie"
-                className="w-full h-auto object-contain rounded-2xl transition-opacity duration-500"
-              />
-              <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-sm rounded-full p-3">
-                <CurrentIcon className={`w-8 h-8 ${exampleImages[currentImageIndex].color}`} strokeWidth={3} />
+          <div className="space-y-6">
+            <div className="text-center space-y-2">
+              <h1 className="text-4xl font-bold text-cyan-400">Take a front selfie</h1>
+              <p className="text-slate-400">For best results, face the camera directly in good lighting</p>
+            </div>
+
+            {/* Drag and Drop Area */}
+            <div
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+              className={`border-2 border-dashed rounded-3xl p-12 transition-all ${
+                isDragging ? 'border-cyan-400 bg-cyan-400/10' : 'border-slate-600'
+              }`}
+            >
+              <div className="flex flex-col items-center space-y-4">
+                <div className="w-32 h-32 rounded-full bg-slate-800 flex items-center justify-center">
+                  <Camera className="w-16 h-16 text-cyan-400" />
+                </div>
+                <p className="text-slate-400 text-lg">No image selected</p>
+                <p className="text-slate-500 text-sm">Drag and drop or use the button below</p>
               </div>
             </div>
 
-            {/* Action Button */}
+            {/* Tips Section */}
+            <div className="bg-slate-900/50 border border-slate-700 rounded-2xl p-6">
+              <div className="flex items-start gap-3">
+                <Info className="w-6 h-6 text-cyan-400 flex-shrink-0 mt-1" />
+                <div>
+                  <h3 className="text-cyan-400 font-semibold text-lg mb-3">Tips for best results:</h3>
+                  <ul className="text-slate-300 space-y-2">
+                    <li>• Face the camera directly</li>
+                    <li>• Ensure good, even lighting</li>
+                    <li>• Keep a neutral expression</li>
+                    <li>• Remove glasses or accessories</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {/* Upload Button */}
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="w-full max-w-sm py-3.5 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white text-lg font-bold rounded-full transition-all duration-300 shadow-lg"
+              className="w-full py-4 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white text-lg font-bold rounded-full transition-all duration-300 shadow-lg"
             >
-              Pick an image
+              Select Image
             </button>
 
             {/* Hidden File Input */}
