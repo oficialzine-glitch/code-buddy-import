@@ -112,7 +112,10 @@ export default function ProfilePage({ onBack, onNavigate }: ProfilePageProps) {
             <ArrowLeft className="w-5 h-5 text-white" />
           </button>
           <h1 className="text-2xl font-bold text-white">{t.profile}</h1>
-          <button className="p-3 bg-slate-800/60 backdrop-blur-sm rounded-2xl border border-slate-700/50 hover:border-blue-500/30 transition-colors duration-200">
+          <button 
+            onClick={() => setShowContactModal(true)}
+            className="p-3 bg-slate-800/60 backdrop-blur-sm rounded-2xl border border-slate-700/50 hover:border-blue-500/30 transition-colors duration-200"
+          >
             <Settings className="w-5 h-5 text-white" />
           </button>
         </div>
