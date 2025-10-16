@@ -1,5 +1,5 @@
 // src/lib/history.ts
-import { supabase } from "./supabaseClient";
+import { supabase } from "@/integrations/supabase/client";
 
 const TABLE = "facial_analyses";
 
