@@ -114,27 +114,27 @@ export default function AnalysisPage({ onBack, onNavigate }: AnalysisPageProps) 
 
         {/* Upload Section */}
         {!selectedImage && (
-          <div className="bg-gradient-to-br from-slate-800/60 via-blue-900/20 to-slate-800/60 backdrop-blur-sm rounded-3xl p-8 border border-blue-500/20 mb-8 animate-slide-up shadow-lg shadow-blue-500/10">
+          <div className="bg-gradient-to-br from-slate-800/60 via-blue-900/20 to-slate-800/60 backdrop-blur-sm rounded-3xl p-6 border border-blue-500/20 mb-8 animate-slide-up shadow-lg shadow-blue-500/10">
             <div
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
-              className={`border-2 border-dashed rounded-3xl p-12 transition-all ${
+              className={`border-2 border-dashed rounded-3xl p-8 transition-all ${
                 isDragging ? 'border-blue-400 bg-blue-400/10' : 'border-slate-600/50'
               }`}
             >
-              <div className="flex flex-col items-center space-y-6">
+              <div className="flex flex-col items-center space-y-4">
                 {/* Camera Icon with Gradient Circle */}
                 <div className="relative">
-                  <div className="w-32 h-32 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/50">
-                    <Camera className="w-16 h-16 text-white" />
+                  <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/50">
+                    <Camera className="w-12 h-12 text-white" />
                   </div>
                 </div>
 
                 {/* Upload Text */}
-                <div className="text-center space-y-3">
-                  <h2 className="text-2xl font-bold text-white">Upload Your Photo</h2>
-                  <p className="text-slate-300 max-w-md">
+                <div className="text-center space-y-2">
+                  <h2 className="text-xl font-bold text-white">Upload Your Photo</h2>
+                  <p className="text-slate-300 max-w-md text-sm leading-relaxed">
                     Tips for best results:<br />
                     <br />
                     • Face the camera directly<br />
@@ -148,9 +148,9 @@ export default function AnalysisPage({ onBack, onNavigate }: AnalysisPageProps) 
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="flex items-center gap-2 px-8 py-3 bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold rounded-full transition-all duration-300 shadow-lg shadow-blue-500/50"
+                  className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold rounded-full transition-all duration-300 shadow-lg shadow-blue-500/50"
                 >
-                  <Upload className="w-5 h-5 animate-bounce" />
+                  <Upload className="w-4 h-4 animate-bounce" />
                   Choose File
                 </button>
               </div>
