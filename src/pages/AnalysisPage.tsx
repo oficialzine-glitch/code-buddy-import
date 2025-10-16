@@ -1,6 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { useEffect } from 'react';
-import { ArrowLeft } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Check, X } from 'lucide-react';
 import LoadingSpinner from '../components/LoadingSpinner';
 import AnalysisResults from '../components/AnalysisResults';
 import PremiumModal from '../components/PremiumModal';
@@ -9,6 +8,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { useAuth } from '../contexts/AuthContext';
 import { saveAnalysis } from '../lib/history';
 import exampleSelfie from '../assets/example-selfie.png';
+import exampleSelfieBad from '../assets/example-selfie-bad.png';
 
 interface AnalysisPageProps {
   onBack: () => void;
@@ -20,12 +20,27 @@ type PageType = 'intro' | 'onboarding' | 'home' | 'analysis' | 'upload' | 'resul
 export default function AnalysisPage({ onBack, onNavigate }: AnalysisPageProps) {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [showPremiumModal, setShowPremiumModal] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { isPremium, user } = useAuth();
   const { isAnalyzing, analysis, analyzeImage } = useImageProcessing();
   const { t } = useLanguage();
 
+  const exampleImages = [
+    { src: exampleSelfie, icon: Check, color: 'text-green-500' },
+    { src: exampleSelfieBad, icon: X, color: 'text-red-500' }
+  ];
+
   useEffect(() => { console.log("MOUNT:", "src/pages/AnalysisPage.tsx"); }, []);
+
+  useEffect(() => {
+    if (!selectedImage) {
+      const interval = setInterval(() => {
+        setCurrentImageIndex((prev) => (prev + 1) % exampleImages.length);
+      }, 5000);
+      return () => clearInterval(interval);
+    }
+  }, [selectedImage, exampleImages.length]);
 
   const handleImageSelect = async (file: File) => {
     const url = URL.createObjectURL(file);
@@ -79,31 +94,24 @@ export default function AnalysisPage({ onBack, onNavigate }: AnalysisPageProps) 
     }
   };
 
+  const CurrentIcon = exampleImages[currentImageIndex].icon;
+
   return (
     <div className="min-h-screen bg-black p-4 pb-20">
       <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="flex items-center mb-8 pt-4">
-          <button
-            onClick={onBack}
-            className="p-3 bg-slate-800/60 backdrop-blur-sm rounded-2xl border border-slate-700/50 hover:border-blue-500/30 hover:bg-slate-700/60 transition-all duration-300 mr-4"
-          >
-            <ArrowLeft className="w-5 h-5 text-white" />
-          </button>
-        </div>
-
         {/* Upload Section */}
         {!selectedImage && (
-          <div className="flex flex-col items-center justify-center min-h-[calc(100vh-8rem)] space-y-4">
-            <h1 className="text-2xl font-bold text-white">Take a front selfie</h1>
-            
-            {/* Image Placeholder */}
+          <div className="flex flex-col items-center justify-center min-h-screen space-y-6">
+            {/* Image Placeholder with Overlay */}
             <div className="relative max-w-sm w-full">
               <img
-                src={exampleSelfie}
+                src={exampleImages[currentImageIndex].src}
                 alt="Example selfie"
-                className="w-full h-auto object-contain rounded-2xl"
+                className="w-full h-auto object-contain rounded-2xl transition-opacity duration-500"
               />
+              <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-sm rounded-full p-3">
+                <CurrentIcon className={`w-8 h-8 ${exampleImages[currentImageIndex].color}`} strokeWidth={3} />
+              </div>
             </div>
 
             {/* Action Button */}
