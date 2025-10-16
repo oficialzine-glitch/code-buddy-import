@@ -20,7 +20,7 @@ export default function AnalysisPage({ onBack, onNavigate }: AnalysisPageProps) 
   const [showPremiumModal, setShowPremiumModal] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { isPremium, user } = useAuth();
+  const { isPremium, user, canStartAnalysis } = useAuth();
   const { isAnalyzing, analysis, analyzeImage } = useImageProcessing();
   const { t } = useLanguage();
 
@@ -72,8 +72,17 @@ export default function AnalysisPage({ onBack, onNavigate }: AnalysisPageProps) 
     return { grade: 'C', color: 'text-red-400' };
   };
 
-  const handleFileSelect = (file: File) => {
+  const handleFileSelect = async (file: File) => {
     if (file && file.type.startsWith('image/')) {
+      // Check if user can start analysis (free users limited to 3)
+      const canAnalyze = await canStartAnalysis();
+      
+      if (!canAnalyze) {
+        // Show premium modal if limit reached
+        setShowPremiumModal(true);
+        return;
+      }
+      
       handleImageSelect(file);
     }
   };

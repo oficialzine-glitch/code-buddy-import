@@ -7,6 +7,8 @@ interface AuthContextType {
   session: Session | null;
   loading: boolean;
   isPremium: boolean;
+  getFreeAnalysisCount: () => Promise<number>;
+  canStartAnalysis: () => Promise<boolean>;
   signIn: (email: string, password: string) => Promise<{ error: AuthError | null }>;
   signUp: (email: string, password: string) => Promise<{ error: AuthError | null }>;
   signInWithGoogle: () => Promise<{ error: AuthError | null }>;
@@ -94,11 +96,42 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     return { error };
   };
 
+  // Get the number of analyses a free user has done
+  const getFreeAnalysisCount = async (): Promise<number> => {
+    if (!user || isPremium) return 0;
+    
+    try {
+      const { data, error } = await supabase
+        .from('facial_analyses')
+        .select('id', { count: 'exact' })
+        .eq('user_id', user.id);
+      
+      if (error) {
+        console.error('Error getting analysis count:', error);
+        return 0;
+      }
+      
+      return data?.length || 0;
+    } catch (error) {
+      console.error('Error getting analysis count:', error);
+      return 0;
+    }
+  };
+
+  // Check if user can start a new analysis
+  const canStartAnalysis = async (): Promise<boolean> => {
+    if (isPremium) return true;
+    const count = await getFreeAnalysisCount();
+    return count < 3;
+  };
+
   const value = {
     user,
     session,
     loading,
     isPremium,
+    getFreeAnalysisCount,
+    canStartAnalysis,
     signIn,
     signUp,
     signInWithGoogle,
