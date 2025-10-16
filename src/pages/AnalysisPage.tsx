@@ -126,7 +126,7 @@ export default function AnalysisPage({ onBack, onNavigate }: AnalysisPageProps) 
               <div className="flex flex-col items-center space-y-4">
                 {/* Camera Icon with Gradient Circle */}
                 <div className="relative">
-                  <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/50">
+                  <div className="w-24 h-24 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 flex items-center justify-center shadow-lg shadow-cyan-500/50">
                     <Camera className="w-12 h-12 text-white" />
                   </div>
                 </div>
