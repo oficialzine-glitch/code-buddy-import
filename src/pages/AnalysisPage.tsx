@@ -135,7 +135,12 @@ export default function AnalysisPage({ onBack, onNavigate }: AnalysisPageProps) 
                 <div className="text-center space-y-3">
                   <h2 className="text-2xl font-bold text-white">Upload Your Photo</h2>
                   <p className="text-slate-300 max-w-md">
-                    Drag and drop your photo here, or click to select. For best results, use a clear front-facing photo.
+                    Tips for best results:<br />
+                    <br />
+                    • Face the camera directly<br />
+                    • Ensure good, even lighting<br />
+                    • Keep a neutral expression<br />
+                    • Remove glasses or accessories
                   </p>
                 </div>
 
