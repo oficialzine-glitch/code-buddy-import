@@ -94,34 +94,25 @@ export default function AnalysisPage({ onBack, onNavigate }: AnalysisPageProps) 
 
         {/* Upload Section */}
         {!selectedImage && (
-          <div className="space-y-6">
-            <h1 className="text-4xl font-bold text-white">Take a front selfie</h1>
+          <div className="flex flex-col items-center justify-center min-h-[calc(100vh-8rem)] space-y-4">
+            <h1 className="text-2xl font-bold text-white">Take a front selfie</h1>
             
             {/* Image Placeholder */}
-            <div className="relative">
+            <div className="relative max-w-sm w-full">
               <img
                 src={exampleSelfie}
                 alt="Example selfie"
-                className="w-full h-auto object-contain rounded-3xl"
+                className="w-full h-auto object-contain rounded-2xl"
               />
             </div>
 
-            {/* Action Buttons */}
-            <div className="space-y-4">
-              <button
-                onClick={() => fileInputRef.current?.click()}
-                className="w-full py-5 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white text-xl font-bold rounded-full transition-all duration-300 shadow-lg"
-              >
-                Upload from library
-              </button>
-              
-              <button
-                onClick={() => fileInputRef.current?.click()}
-                className="w-full py-5 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white text-xl font-bold rounded-full transition-all duration-300 shadow-lg"
-              >
-                Take a selfie
-              </button>
-            </div>
+            {/* Action Button */}
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              className="w-full max-w-sm py-3.5 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white text-lg font-bold rounded-full transition-all duration-300 shadow-lg"
+            >
+              Pick an image
+            </button>
 
             {/* Hidden File Input */}
             <input
