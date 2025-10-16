@@ -17,7 +17,7 @@ export default function PaywallModal({ isOpen, onClose }: PaywallModalProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 top-0 left-0 right-0 bottom-0 bg-gradient-to-br from-black via-slate-950 to-black z-[9999] flex flex-col min-h-screen h-full w-full overflow-y-auto overflow-x-hidden">
+    <div className="fixed inset-0 bg-gradient-to-br from-black via-slate-950 to-black z-[99999] flex flex-col w-screen h-screen overflow-y-auto overflow-x-hidden">
       {/* Blue gradient overlay in top right */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-blue-600/20 via-cyan-500/10 to-transparent rounded-full blur-3xl pointer-events-none"></div>
       <div className="absolute top-10 right-10 w-64 h-64 bg-gradient-to-bl from-cyan-400/15 via-blue-500/8 to-transparent rounded-full blur-2xl pointer-events-none"></div>
