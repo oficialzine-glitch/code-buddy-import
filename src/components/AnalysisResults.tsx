@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { X, Eye, Star, Sparkles, Calendar, BarChart3, Crown } from 'lucide-react';
+import PremiumModal from './PremiumModal';
 
 type Props = {
   analysis: any;             // exact object from Edge Function (don't reshape)
@@ -41,14 +42,15 @@ const FACE_SHAPE_FACTS: Record<string, string[]> = {
 export default function AnalysisResults({ analysis, imageUrl, isPremium = false }: Props) {
   // Extract safe overall score from analysis
   const safeOverallScore = analysis?.overall ?? 0;
+  const [showPremiumModal, setShowPremiumModal] = useState(false);
 
   const handlePremiumFeatureClick = () => {
-    // This would open premium modal - for now just log
-    console.log('Premium feature clicked');
+    setShowPremiumModal(true);
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto">
+    <>
+      <div className="w-full max-w-4xl mx-auto">
       {/* Profile Photo */}
       {imageUrl && (
         <div className="text-center mb-8 animate-scale-in">
@@ -660,5 +662,20 @@ export default function AnalysisResults({ analysis, imageUrl, isPremium = false 
         );
       })()}
     </div>
+
+    {/* Floating Premium Button - Only for Free Users */}
+    {!isPremium && (
+      <button
+        onClick={() => setShowPremiumModal(true)}
+        className="fixed bottom-6 right-6 z-30 px-6 py-3 bg-gradient-to-r from-yellow-400 via-yellow-500 to-amber-500 text-black font-bold rounded-full shadow-2xl shadow-yellow-500/50 hover:shadow-yellow-500/70 hover:scale-105 transition-all duration-300 flex items-center space-x-2 animate-bounce-slow"
+      >
+        <Crown className="w-5 h-5" />
+        <span>Premium</span>
+      </button>
+    )}
+
+    {/* Premium Modal */}
+    <PremiumModal isOpen={showPremiumModal} onClose={() => setShowPremiumModal(false)} />
+  </>
   );
 }
