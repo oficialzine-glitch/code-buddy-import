@@ -146,10 +146,11 @@ export default function AnalysisPage({ onBack, onNavigate }: AnalysisPageProps) 
 
                 {/* Choose File Button */}
                 <button
+                  type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="flex items-center gap-2 px-8 py-3 bg-slate-700/80 hover:bg-slate-600/80 text-white font-semibold rounded-full transition-all duration-300 shadow-lg"
+                  className="flex items-center gap-2 px-8 py-3 bg-cyan-500/90 hover:bg-cyan-600/90 text-white font-semibold rounded-full transition-all duration-300 shadow-lg shadow-cyan-500/30"
                 >
-                  <Upload className="w-5 h-5" />
+                  <Upload className="w-5 h-5 animate-bounce" />
                   Choose File
                 </button>
               </div>
@@ -160,12 +161,13 @@ export default function AnalysisPage({ onBack, onNavigate }: AnalysisPageProps) 
               ref={fileInputRef}
               type="file"
               accept="image/*"
-              capture="user"
+              capture="environment"
               onChange={(e) => {
                 const file = e.target.files?.[0];
                 if (file) handleFileSelect(file);
               }}
               className="hidden"
+              aria-label="Upload photo"
             />
           </div>
         )}
