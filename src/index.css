@@ -102,6 +102,26 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Fix mobile touch/tap issues */
+button, a, [role="button"] {
+  -webkit-tap-highlight-color: rgba(59, 130, 246, 0.3);
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: pointer;
+}
+
+/* Ensure proper stacking for interactive elements */
+button:active {
+  position: relative;
+  z-index: 1;
+}
+
+/* Prevent double-tap zoom on buttons */
+input, textarea, button, select, a {
+  touch-action: manipulation;
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;

@@ -181,10 +181,10 @@ function App() {
       
       {/* Static Bottom Navigation - Only show on main pages, not on special pages */}
       {!['upload', 'previous-analyses'].includes(currentPage) && (
-        <div className="fixed bottom-0 left-0 right-0 p-3 bg-black/20 backdrop-blur-sm">
+        <div className="fixed bottom-0 left-0 right-0 p-3 bg-black/20 backdrop-blur-sm z-50 pointer-events-none">
           <div className="max-w-md mx-auto">
             <div className="flex justify-center">
-              <div className="bg-slate-800/80 backdrop-blur-sm rounded-xl p-1 border border-slate-700/50">
+              <div className="bg-slate-800/80 backdrop-blur-sm rounded-xl p-1 border border-slate-700/50 pointer-events-auto">
                 <button
                   onClick={() => setCurrentPage('analysis')}
                   className={`px-3 py-2 rounded-xl text-xs font-medium transition-all duration-200 ${
