@@ -5,6 +5,7 @@ import { getHistory, AnalysisRow } from "../lib/history";
 import { supabase } from "../lib/supabaseClient";
 import PremiumModal from "../components/PremiumModal";
 import ReviewPromptModal from "../components/ReviewPromptModal";
+import { getPublicImageUrl } from "../lib/storageHelpers";
 
 // Local storage key for persisting glowup map state
 const GLOWUP_MAP_STORAGE_KEY = "glowup_map_state";
@@ -435,7 +436,7 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
               <div className="relative w-40 h-40 md:w-48 md:h-48 rounded-full bg-gradient-to-br from-cyan-400/20 via-blue-500/30 to-cyan-400/20 p-2 shadow-lg shadow-cyan-500/30">
                 {selectedAnalysis?.image_url ? (
                   <img
-                    src={selectedAnalysis.image_url}
+                    src={getPublicImageUrl(selectedAnalysis.image_url) || ''}
                     alt="Profile"
                     className="w-full h-full rounded-full object-cover"
                   />
@@ -511,7 +512,7 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
                         {analysisRow.image_url ? (
                           <div className="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-400 via-blue-500 to-blue-600 p-0.5">
                             <img
-                              src={analysisRow.image_url}
+                              src={getPublicImageUrl(analysisRow.image_url) || ''}
                               alt="Analysis"
                               className="w-full h-full rounded-full object-cover"
                             />
@@ -560,7 +561,7 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
                 <div className="relative w-32 h-32 rounded-full bg-gradient-to-tr from-cyan-400/40 via-blue-500/30 to-cyan-400/40 p-1 shadow-lg shadow-cyan-500/30">
                   {selectedAnalysis.image_url ? (
                     <img
-                      src={selectedAnalysis.image_url}
+                      src={getPublicImageUrl(selectedAnalysis.image_url) || ''}
                       alt="Profile"
                       className="w-full h-full rounded-full object-cover"
                     />
