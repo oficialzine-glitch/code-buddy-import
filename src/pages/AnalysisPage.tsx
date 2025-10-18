@@ -64,7 +64,7 @@ export default function AnalysisPage({ onBack, onNavigate, onAnalysisComplete }:
           if (!atLimit) {
             const saveResult = await saveAnalysis({
               userId: user.id,
-              imageUrl: null, // never persist blob URLs; storage_path will be populated by the uploader
+              imageUrl: tempUrl, // temporary blob URL - edge function will replace with storage path
               analysis: result
             });
             if (saveResult.ok) {

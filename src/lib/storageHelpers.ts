@@ -1,8 +1,6 @@
+const SUPABASE_PROJECT_ID = 'hebwatwkpszebonmrige';
 const BUCKET_NAME = 'user_uploads';
 
-// Derive base URL from environment to avoid hardcoding project refs
-const SUPABASE_URL = (import.meta as any)?.env?.VITE_SUPABASE_URL?.replace(/\/+$/, '') || '';
-const SUPABASE_PROJECT_ID = (import.meta as any)?.env?.VITE_SUPABASE_PROJECT_ID || (SUPABASE_URL ? new URL(SUPABASE_URL).hostname.split('.')[0] : '');
 /**
  * Constructs a public URL from a storage path
  * @param storagePath - The path in the bucket (e.g., "uploads/user_id/filename.jpg")
@@ -25,12 +23,7 @@ export function publicUrlFromPath(storagePath: string | null | undefined): strin
   }
   
   // Construct public bucket URL
-  const base = SUPABASE_URL || (SUPABASE_PROJECT_ID ? `https://${SUPABASE_PROJECT_ID}.supabase.co` : '');
-  if (!base) {
-    console.warn('Supabase base URL not configured. Unable to build public URL for', normalizedPath);
-    return '';
-  }
-  return `${base}/storage/v1/object/public/${BUCKET_NAME}/${normalizedPath}`;
+  return `https://${SUPABASE_PROJECT_ID}.supabase.co/storage/v1/object/public/${BUCKET_NAME}/${normalizedPath}`;
 }
 
 /**

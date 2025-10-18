@@ -70,11 +70,7 @@ export function useImageProcessing() {               // ← named export (requir
     setAnalysis(null);
 
     try {
-      let localPreview: string | null = null;
-      try { 
-        localPreview = URL.createObjectURL(file);
-        setPreviewUrl(localPreview);
-      } catch {}
+      try { setPreviewUrl(URL.createObjectURL(file)); } catch {}
 
       const result: AnalysisResult = await analyzeFacialFeatures(file, isPremium);
 
@@ -86,13 +82,6 @@ export function useImageProcessing() {               // ← named export (requir
       console.log('symmetry:', result.symmetry);
       console.log('goldenRatio:', result.goldenRatio);
       
-      // Clean up preview blob URL once the edge function returns
-      if (localPreview) {
-        try { URL.revokeObjectURL(localPreview); } catch {}
-        setPreviewUrl(null);
-        localPreview = null;
-      }
-
       return result;
     } catch (e: any) {
       const msg = e?.message || "Face analysis failed";
