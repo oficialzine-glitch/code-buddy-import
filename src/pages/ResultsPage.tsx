@@ -4,6 +4,7 @@ import { getHistory, deleteAnalysis, AnalysisRow } from '../lib/history';
 import { FacialAnalysis } from '../types';
 import AnalysisResults from '../components/AnalysisResults';
 import LoadingSpinner from '../components/LoadingSpinner';
+import StorageImage from '../components/StorageImage';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -148,10 +149,11 @@ export default function ResultsPage({ onNavigate }: ResultsPageProps) {
                     <div className="flex-shrink-0">
                       {analysis.image_url ? (
                         <div className="w-16 h-16 rounded-full bg-gradient-to-br from-cyan-400 via-blue-500 to-blue-600 p-1 shadow-lg shadow-cyan-500/40">
-                          <img 
-                            src={analysis.image_url}
+                          <StorageImage 
+                            pathOrUrl={analysis.image_url}
                             alt="Analysis thumbnail"
                             className="w-full h-full rounded-full object-cover"
+                            rounded
                           />
                         </div>
                       ) : (

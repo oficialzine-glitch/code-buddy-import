@@ -8,6 +8,7 @@ import { useImageProcessing } from '../hooks/useImageProcessing';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useAuth } from '../contexts/AuthContext';
 import { saveAnalysis, checkStorageLimit } from '../lib/history';
+import { uploadToUserUploads } from '../lib/storageImages';
 
 interface AnalysisPageProps {
   onBack: () => void;
@@ -30,10 +31,18 @@ export default function AnalysisPage({ onBack, onNavigate, onAnalysisComplete }:
   useEffect(() => { console.log("MOUNT:", "src/pages/AnalysisPage.tsx"); }, []);
 
   const handleImageSelect = async (file: File) => {
-    const url = URL.createObjectURL(file);
-    setSelectedImage(url);
-    
     try {
+      // Upload image to storage first
+      const { url: storageUrl } = await uploadToUserUploads(file, user?.id);
+      
+      if (!storageUrl) {
+        console.error('Failed to upload image to storage');
+        return;
+      }
+
+      // Set the persistent storage URL for preview
+      setSelectedImage(storageUrl);
+      
       // Check storage limit for premium users before analysis
       if (user && isPremium) {
         const { atLimit } = await checkStorageLimit({ userId: user.id });
@@ -63,7 +72,7 @@ export default function AnalysisPage({ onBack, onNavigate, onAnalysisComplete }:
           if (!atLimit) {
             const saveResult = await saveAnalysis({
               userId: user.id,
-              imageUrl: url,
+              imageUrl: storageUrl, // Use persistent storage URL
               analysis: result
             });
             if (saveResult.ok) {
@@ -88,7 +97,6 @@ export default function AnalysisPage({ onBack, onNavigate, onAnalysisComplete }:
   const handlePremiumFeatureClick = () => setShowPremiumModal(true);
 
   const handleClearImage = () => {
-    if (selectedImage) URL.revokeObjectURL(selectedImage);
     setSelectedImage(null);
   };
 
