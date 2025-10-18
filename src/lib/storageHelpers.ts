@@ -1,4 +1,4 @@
-const SUPABASE_PROJECT_ID = 'hebwatwkpszebonmrige';
+const SUPABASE_PROJECT_ID = import.meta.env.VITE_SUPABASE_PROJECT_ID || 'hebwatwkpszebonmrige';
 const BUCKET_NAME = 'user_uploads';
 
 /**

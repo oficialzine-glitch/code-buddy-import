@@ -1,2 +1,2 @@
-// Unified Supabase client export using Lovable Cloud-managed config
-export { supabase } from "@/integrations/supabase/client";
+// Unified Supabase client export using external Supabase project
+export { supabase } from "./supabaseClient";
