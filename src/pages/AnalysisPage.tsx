@@ -30,8 +30,9 @@ export default function AnalysisPage({ onBack, onNavigate, onAnalysisComplete }:
   useEffect(() => { console.log("MOUNT:", "src/pages/AnalysisPage.tsx"); }, []);
 
   const handleImageSelect = async (file: File) => {
-    const url = URL.createObjectURL(file);
-    setSelectedImage(url);
+    // Create temporary blob URL for preview only - NOT persisted
+    const tempUrl = URL.createObjectURL(file);
+    setSelectedImage(tempUrl);
     
     try {
       // Check storage limit for premium users before analysis
@@ -63,7 +64,7 @@ export default function AnalysisPage({ onBack, onNavigate, onAnalysisComplete }:
           if (!atLimit) {
             const saveResult = await saveAnalysis({
               userId: user.id,
-              imageUrl: url,
+              imageUrl: tempUrl, // temporary blob URL - edge function will replace with storage path
               analysis: result
             });
             if (saveResult.ok) {

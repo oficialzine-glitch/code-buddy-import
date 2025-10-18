@@ -4,7 +4,7 @@ import { getHistory, deleteAnalysis, AnalysisRow } from '../lib/history';
 import { useAuth } from '../contexts/AuthContext';
 import AnalysisResults from '../components/AnalysisResults';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { getPublicImageUrl } from '../lib/storageHelpers';
+import { resolveImageSrc, publicUrlFromPath } from '../lib/storageHelpers';
 
 interface PreviousAnalysesPageProps {
   onBack: () => void;
@@ -94,7 +94,11 @@ export default function PreviousAnalysesPage({ onBack }: PreviousAnalysesPagePro
           <div className="animate-fade-in">
             <AnalysisResults
               analysis={selectedAnalysis.analysis}
-              imageUrl={getPublicImageUrl(selectedAnalysis.image_url)}
+              imageUrl={
+                selectedAnalysis.storage_path
+                  ? publicUrlFromPath(selectedAnalysis.storage_path)
+                  : resolveImageSrc(selectedAnalysis.image_url)
+              }
               isPremium={isPremium}
             />
           </div>
@@ -158,10 +162,14 @@ export default function PreviousAnalysesPage({ onBack }: PreviousAnalysesPagePro
                 <div className="flex items-center space-x-4">
                   {/* Thumbnail */}
                   <div className="flex-shrink-0">
-                    {analysis.image_url ? (
+                    {analysis.image_url || analysis.storage_path ? (
                       <div className="w-16 h-16 rounded-full bg-gradient-to-br from-cyan-400 via-blue-500 to-blue-600 p-1 shadow-lg shadow-cyan-500/40">
                         <img 
-                          src={getPublicImageUrl(analysis.image_url)}
+                          src={
+                            analysis.storage_path
+                              ? publicUrlFromPath(analysis.storage_path)
+                              : resolveImageSrc(analysis.image_url)
+                          }
                           alt="Analysis thumbnail"
                           className="w-full h-full rounded-full object-cover"
                         />

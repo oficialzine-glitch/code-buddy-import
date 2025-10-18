@@ -8,6 +8,7 @@ export interface StoredAnalysis {
   scores: any[];
   recommendations: string[];
   image_url?: string;
+  storage_path?: string; // Preferred: path in bucket
   created_at: string;
   updated_at: string;
 }

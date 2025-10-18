@@ -9,6 +9,7 @@ export type AnalysisRow = {
   user_id: string;
   created_at: string;
   image_url: string | null;
+  storage_path?: string | null; // Preferred: path in bucket
   analysis: any;          // JSONB payload we store
   overall_score: number;  // integer 0..100 (NOT NULL in DB)
 };
@@ -70,7 +71,7 @@ export async function getHistory(opts: { userId: string; limit?: number }) {
   const { userId, limit = 10 } = opts;
   const { data, error } = await supabase
     .from(TABLE)
-    .select("id, user_id, created_at, image_url, analysis, overall_score")
+    .select("id, user_id, created_at, image_url, storage_path, analysis, overall_score")
     .eq("user_id", userId)
     .order("created_at", { ascending: false })
     .limit(limit);

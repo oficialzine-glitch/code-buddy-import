@@ -1,7 +1,7 @@
 import React from 'react';
 import { Calendar, Star, Eye, Trash2, Share } from 'lucide-react';
 import { StoredAnalysis } from '../lib/database';
-import { getPublicImageUrl } from '../lib/storageHelpers';
+import { resolveImageSrc, publicUrlFromPath } from '../lib/storageHelpers';
 
 interface AnalysisResultCardProps {
   analysis: StoredAnalysis;
@@ -11,6 +11,10 @@ interface AnalysisResultCardProps {
 }
 
 export default function AnalysisResultCard({ analysis, onDelete, onView }: AnalysisResultCardProps) {
+  // Prefer storage_path, fallback to image_url
+  const imageSrc = analysis.storage_path 
+    ? publicUrlFromPath(analysis.storage_path)
+    : resolveImageSrc(analysis.image_url);
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       month: 'short',
@@ -36,12 +40,12 @@ export default function AnalysisResultCard({ analysis, onDelete, onView }: Analy
   return (
     <div className="bg-slate-800/60 backdrop-blur-sm rounded-3xl p-6 border border-slate-700/50 hover:border-blue-500/30 transition-all duration-300 hover:scale-102 animate-fade-in group">
       {/* Profile Image with Blue Gradient Circle */}
-      {analysis.image_url && (
+      {imageSrc && (
         <div className="text-center mb-6 animate-scale-in">
           <div className="relative inline-block">
             <div className="w-20 h-20 rounded-full bg-gradient-to-br from-cyan-400 via-blue-500 to-blue-600 p-1 shadow-lg shadow-cyan-500/40 relative">
               <img 
-                src={getPublicImageUrl(analysis.image_url)}
+                src={imageSrc}
                 alt="Analyzed face"
                 className="w-full h-full rounded-full object-cover relative z-10"
               />
@@ -53,7 +57,7 @@ export default function AnalysisResultCard({ analysis, onDelete, onView }: Analy
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center space-x-3">
-          {!analysis.image_url && (
+          {!imageSrc && (
             <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center">
               <Eye className="w-6 h-6 text-white" />
             </div>
