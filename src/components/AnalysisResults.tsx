@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { X, Eye, Star, Sparkles, Calendar, BarChart3, Crown } from 'lucide-react';
 import PremiumModal from './PremiumModal';
-import StorageImage from './StorageImage';
 
 type Props = {
   analysis: any;             // exact object from Edge Function (don't reshape)
@@ -58,12 +57,7 @@ export default function AnalysisResults({ analysis, imageUrl, isPremium = false,
         <div className="text-center mb-8 animate-scale-in">
           <div className="relative inline-block">
             <div className="w-32 h-32 rounded-full bg-gradient-to-br from-cyan-400 via-blue-500 to-blue-600 p-2 shadow-2xl shadow-cyan-500/60 relative">
-              <StorageImage 
-                pathOrUrl={imageUrl} 
-                alt="Profile Analysis" 
-                className="w-full h-full rounded-full object-cover relative z-10"
-                rounded
-              />
+              <img src={imageUrl} alt="Profile Analysis" className="w-full h-full rounded-full object-cover relative z-10" />
             </div>
           </div>
         </div>
@@ -173,8 +167,8 @@ export default function AnalysisResults({ analysis, imageUrl, isPremium = false,
         
         {imageUrl && (
           <div className="relative rounded-2xl overflow-hidden">
-            <StorageImage 
-              pathOrUrl={imageUrl} 
+            <img 
+              src={imageUrl} 
               alt="Analysis preview" 
               className="w-full h-48 object-cover"
             />

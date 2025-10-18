@@ -1,4 +1,4 @@
-import { supabase } from './supabaseClient';
+import { supabase } from './supabase';
 import { FacialAnalysis } from '../types';
 
 export interface StoredAnalysis {

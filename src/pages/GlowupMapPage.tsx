@@ -5,7 +5,6 @@ import { getHistory, AnalysisRow } from "../lib/history";
 import { supabase } from "../lib/supabaseClient";
 import PremiumModal from "../components/PremiumModal";
 import ReviewPromptModal from "../components/ReviewPromptModal";
-import StorageImage from "../components/StorageImage";
 
 // Local storage key for persisting glowup map state
 const GLOWUP_MAP_STORAGE_KEY = "glowup_map_state";
@@ -435,11 +434,10 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
               {/* Avatar */}
               <div className="relative w-40 h-40 md:w-48 md:h-48 rounded-full bg-gradient-to-br from-cyan-400/20 via-blue-500/30 to-cyan-400/20 p-2 shadow-lg shadow-cyan-500/30">
                 {selectedAnalysis?.image_url ? (
-                  <StorageImage
-                    pathOrUrl={selectedAnalysis.image_url}
+                  <img
+                    src={selectedAnalysis.image_url}
                     alt="Profile"
                     className="w-full h-full rounded-full object-cover"
-                    rounded
                   />
                 ) : (
                   <div className="w-full h-full rounded-full bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center">
@@ -512,11 +510,10 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
                       <div className="flex-shrink-0">
                         {analysisRow.image_url ? (
                           <div className="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-400 via-blue-500 to-blue-600 p-0.5">
-                            <StorageImage
-                              pathOrUrl={analysisRow.image_url}
+                            <img
+                              src={analysisRow.image_url}
                               alt="Analysis"
                               className="w-full h-full rounded-full object-cover"
-                              rounded
                             />
                           </div>
                         ) : (
@@ -562,11 +559,10 @@ export default function GlowupMapPage({ onBack }: GlowupMapPageProps) {
                 {/* Avatar image */}
                 <div className="relative w-32 h-32 rounded-full bg-gradient-to-tr from-cyan-400/40 via-blue-500/30 to-cyan-400/40 p-1 shadow-lg shadow-cyan-500/30">
                   {selectedAnalysis.image_url ? (
-                    <StorageImage
-                      pathOrUrl={selectedAnalysis.image_url}
+                    <img
+                      src={selectedAnalysis.image_url}
                       alt="Profile"
                       className="w-full h-full rounded-full object-cover"
-                      rounded
                     />
                   ) : (
                     <div className="w-full h-full rounded-full bg-slate-700 flex items-center justify-center">
