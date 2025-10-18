@@ -14,6 +14,19 @@ export function getPublicImageUrl(imagePath: string | null | undefined): string 
     return imagePath;
   }
   
+  // Normalize the path
+  let normalizedPath = imagePath.trim().replace(/^\/+/, '');
+  
+  // Remove bucket name prefix if present
+  if (normalizedPath.startsWith('user_uploads/')) {
+    normalizedPath = normalizedPath.replace('user_uploads/', '');
+  }
+  
+  // If path is just a filename (no slashes), prefix with uploads/
+  if (!normalizedPath.includes('/')) {
+    normalizedPath = `uploads/${normalizedPath}`;
+  }
+  
   // Construct public bucket URL
-  return `https://${SUPABASE_PROJECT_ID}.supabase.co/storage/v1/object/public/${BUCKET_NAME}/${imagePath}`;
+  return `https://${SUPABASE_PROJECT_ID}.supabase.co/storage/v1/object/public/${BUCKET_NAME}/${normalizedPath}`;
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Calendar, Star, Eye, Trash2, Share } from 'lucide-react';
 import { StoredAnalysis } from '../lib/database';
+import { getPublicImageUrl } from '../lib/storageHelpers';
 
 interface AnalysisResultCardProps {
   analysis: StoredAnalysis;
@@ -40,7 +41,7 @@ export default function AnalysisResultCard({ analysis, onDelete, onView }: Analy
           <div className="relative inline-block">
             <div className="w-20 h-20 rounded-full bg-gradient-to-br from-cyan-400 via-blue-500 to-blue-600 p-1 shadow-lg shadow-cyan-500/40 relative">
               <img 
-                src={analysis.image_url}
+                src={getPublicImageUrl(analysis.image_url)}
                 alt="Analyzed face"
                 className="w-full h-full rounded-full object-cover relative z-10"
               />
