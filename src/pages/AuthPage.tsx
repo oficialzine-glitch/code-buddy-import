@@ -55,12 +55,6 @@ export default function AuthPage({ onBack }: AuthPageProps) {
     }
   };
 
-  const togglePasswordVisibility = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setShowPassword(!showPassword);
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-slate-950 to-black relative overflow-hidden flex items-center justify-center p-4">
       {/* Blue gradient overlay in top right */}
@@ -112,15 +106,20 @@ export default function AuthPage({ onBack }: AuthPageProps) {
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-4 bg-slate-800/60 border border-slate-700/50 rounded-2xl text-white placeholder-slate-500 focus:border-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 transition-all duration-200 pr-14"
+                className="w-full px-4 py-4 bg-slate-800/60 border border-slate-700/50 rounded-2xl text-white placeholder-slate-500 focus:border-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 transition-all duration-200"
                 placeholder="••••••••"
                 required
+                style={{ paddingRight: '3.5rem' }}
               />
               <button
                 type="button"
-                onClick={togglePasswordVisibility}
-                onTouchEnd={togglePasswordVisibility}
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-white transition-colors p-2 touch-manipulation active:scale-95"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setShowPassword(!showPassword);
+                }}
+                className="absolute top-0 right-0 h-full flex items-center justify-center px-4 text-slate-400 hover:text-white transition-colors z-10"
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
               >
                 {showPassword ? <EyeOff className="w-6 h-6" /> : <Eye className="w-6 h-6" />}
               </button>
