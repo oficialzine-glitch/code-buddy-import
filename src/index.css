@@ -111,12 +111,6 @@ button, a, [role="button"] {
   cursor: pointer;
 }
 
-/* Ensure proper stacking for interactive elements */
-button:active {
-  position: relative;
-  z-index: 1;
-}
-
 /* Prevent double-tap zoom on buttons */
 input, textarea, button, select, a {
   touch-action: manipulation;
