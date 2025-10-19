@@ -90,7 +90,7 @@ export default function HomePage({ onNavigate }: HomePageProps) {
       <div className="text-center mb-8">
         <div className="relative inline-block">
           {/* Subtle glowing border */}
-          <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/30 via-blue-500/40 to-cyan-500/30 rounded-2xl blur-sm scale-[1.02]"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/30 via-blue-500/40 to-cyan-500/30 rounded-2xl blur-sm scale-[1.02] pointer-events-none"></div>
           
           {/* Main image */}
           <img 
@@ -150,8 +150,8 @@ export default function HomePage({ onNavigate }: HomePageProps) {
             alt="Glowup Map - Your personalized transformation roadmap"
             className="w-full max-w-lg mx-auto rounded-2xl shadow-lg shadow-blue-500/20 border border-blue-500/20"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          <div className="absolute bottom-4 left-4 right-4 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+          <div className="absolute bottom-4 left-4 right-4 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
             <h3 className="text-white font-bold text-xl mb-2">Discover Your Glowup Map</h3>
             <p className="text-blue-200 text-sm">Get your personalized transformation roadmap</p>
           </div>
