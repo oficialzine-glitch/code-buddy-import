@@ -98,28 +98,25 @@ export default function AuthPage({ onBack }: AuthPageProps) {
             </div>
           </div>
 
-          {/* Password Field */}
+{/* Password Field */}
           <div>
             <label className="block text-white text-sm font-medium mb-3">Password</label>
-            <div className="relative">
+            <div className="flex items-center relative bg-slate-800/60 border border-slate-700/50 rounded-2xl focus-within:border-cyan-500/50 focus-within:ring-2 focus-within:ring-cyan-500/20 transition-all duration-200">
               <input
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-4 bg-slate-800/60 border border-slate-700/50 rounded-2xl text-white placeholder-slate-500 focus:border-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 transition-all duration-200"
+                className="flex-1 px-4 py-4 bg-transparent text-white placeholder-slate-500 focus:outline-none rounded-2xl"
                 placeholder="••••••••"
                 required
-                style={{ paddingRight: '3.5rem' }}
               />
               <button
                 type="button"
                 onClick={(e) => {
                   e.preventDefault();
-                  e.stopPropagation();
                   setShowPassword(!showPassword);
                 }}
-                className="absolute top-0 right-0 h-full flex items-center justify-center px-4 text-slate-400 hover:text-white transition-colors z-10"
-                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                className="flex-shrink-0 px-4 py-4 text-slate-400 hover:text-white transition-colors"
               >
                 {showPassword ? <EyeOff className="w-6 h-6" /> : <Eye className="w-6 h-6" />}
               </button>
