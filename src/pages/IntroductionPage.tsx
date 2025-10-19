@@ -1,5 +1,6 @@
 import React from 'react';
 import phoneMockupImage from '../assets/phone-mockup.png';
+import CrossPressable from '../components/ui/CrossPressable';
 
 interface IntroductionPageProps {
   onGetStarted: () => void;
@@ -7,11 +8,6 @@ interface IntroductionPageProps {
 }
 
 export default function IntroductionPage({ onGetStarted, onSignIn }: IntroductionPageProps) {
-  const handleSwipe = (e: React.TouchEvent | React.MouseEvent) => {
-    // For now, we'll trigger on touch/click, but this could be enhanced with actual swipe detection
-    onGetStarted();
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-slate-950 to-black relative overflow-hidden flex flex-col">
       {/* Blue gradient overlay in top right */}
@@ -37,24 +33,23 @@ export default function IntroductionPage({ onGetStarted, onSignIn }: Introductio
         </div>
 
         {/* Get Started button */}
-        <div className="w-full relative z-10">
-          <button
-            onClick={handleSwipe}
-            onTouchEnd={handleSwipe}
+        <div className="w-full relative z-10" style={{ zIndex: 10 }}>
+          <CrossPressable
+            onPress={onGetStarted}
             className="w-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold py-4 rounded-2xl shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center relative overflow-hidden group text-lg"
           >
             <span>Get Started</span>
-          </button>
+          </CrossPressable>
           
           {/* Sign in link */}
           <div className="text-center mt-4">
             <span className="text-slate-400">Already have an account? </span>
-            <button
-              onClick={onSignIn}
-              className="text-cyan-400 font-semibold underline hover:text-cyan-300 transition-colors"
+            <CrossPressable
+              onPress={onSignIn}
+              className="text-cyan-400 font-semibold underline hover:text-cyan-300 transition-colors inline"
             >
               Sign in
-            </button>
+            </CrossPressable>
           </div>
         </div>
       </div>

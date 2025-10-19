@@ -14,6 +14,7 @@ import PremiumModal from './components/PremiumModal';
 import ReviewPromptModal from './components/ReviewPromptModal';
 import LoadingSpinner from './components/LoadingSpinner';
 import CreatorCodeModal from './components/CreatorCodeModal';
+import CrossPressable from './components/ui/CrossPressable';
 import { FacialAnalysis } from './types';
 import { useAuth } from './contexts/AuthContext';
 
@@ -166,13 +167,14 @@ function App() {
           {/* Top Right Buttons */}
           <div className="flex items-center space-x-2">
             {/* Premium Button */}
-            <button
-              onClick={() => setShowPremiumModal(true)}
+            <CrossPressable
+              onPress={() => setShowPremiumModal(true)}
               className="px-4 py-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-bold text-sm rounded-full shadow-lg shadow-yellow-500/25 hover:shadow-yellow-500/40 transition-all duration-300 transform hover:scale-105 active:scale-95 flex items-center space-x-2"
+              style={{ zIndex: 10 }}
             >
               <Crown className="w-4 h-4" />
               <span>Premium</span>
-            </button>
+            </CrossPressable>
           </div>
         </div>
       )}
@@ -185,50 +187,54 @@ function App() {
           <div className="max-w-md mx-auto">
             <div className="flex justify-center">
               <div className="bg-slate-800/80 backdrop-blur-sm rounded-xl p-1 border border-slate-700/50 pointer-events-auto">
-                <button
-                  onClick={() => setCurrentPage('analysis')}
+                <CrossPressable
+                  onPress={() => setCurrentPage('analysis')}
                   className={`px-3 py-2 rounded-xl text-xs font-medium transition-all duration-200 ${
                     currentPage === 'analysis' || currentPage === 'home'
                       ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg'
                       : 'text-slate-400 hover:text-white'
                   }`}
+                  style={{ zIndex: 10 }}
                 >
                   <Scan className="w-4 h-4 inline mr-1" />
                   Analysis
-                </button>
-                <button
-                  onClick={() => setCurrentPage('glowup-map')}
+                </CrossPressable>
+                <CrossPressable
+                  onPress={() => setCurrentPage('glowup-map')}
                   className={`px-3 py-2 rounded-xl text-xs font-medium transition-all duration-200 ${
                     currentPage === 'glowup-map'
                       ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg'
                       : 'text-slate-400 hover:text-white'
                   }`}
+                  style={{ zIndex: 10 }}
                 >
                   <Sparkles className="w-4 h-4 inline mr-1" />
                   Glowup
-                </button>
-                <button
-                  onClick={() => setCurrentPage('results')}
+                </CrossPressable>
+                <CrossPressable
+                  onPress={() => setCurrentPage('results')}
                   className={`px-3 py-2 rounded-xl text-xs font-medium transition-all duration-200 ${
                     currentPage === 'results'
                       ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg'
                       : 'text-slate-400 hover:text-white'
                   }`}
+                  style={{ zIndex: 10 }}
                 >
                   <History className="w-4 h-4 inline mr-1" />
                   Results
-                </button>
-                <button
-                  onClick={() => setCurrentPage('profile')}
+                </CrossPressable>
+                <CrossPressable
+                  onPress={() => setCurrentPage('profile')}
                   className={`px-3 py-2 rounded-xl text-xs font-medium transition-all duration-200 ${
                     currentPage === 'profile'
                       ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg'
                       : 'text-slate-400 hover:text-white'
                   }`}
+                  style={{ zIndex: 10 }}
                 >
                   <User className="w-4 h-4 inline mr-1" />
                   Profile
-                </button>
+                </CrossPressable>
               </div>
             </div>
           </div>

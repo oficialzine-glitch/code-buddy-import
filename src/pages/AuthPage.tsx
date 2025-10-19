@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Mail, Lock, Eye, EyeOff, Sparkles } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import TermsOfServiceModal from '../components/TermsOfServiceModal';
+import CrossPressable from '../components/ui/CrossPressable';
 
 interface AuthPageProps {
   onBack: () => void;
@@ -110,13 +111,13 @@ export default function AuthPage({ onBack }: AuthPageProps) {
                 placeholder="••••••••"
                 required
               />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
+              <CrossPressable
+                onPress={() => setShowPassword(!showPassword)}
                 className="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-white transition-colors"
+                style={{ zIndex: 10 }}
               >
                 {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-              </button>
+              </CrossPressable>
             </div>
           </div>
 
@@ -125,6 +126,7 @@ export default function AuthPage({ onBack }: AuthPageProps) {
             type="submit"
             disabled={loading}
             className="w-full py-4 bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold rounded-2xl shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+            style={{ zIndex: 10 }}
           >
             {loading ? 'Processing...' : 'Get Started'}
           </button>
@@ -133,25 +135,24 @@ export default function AuthPage({ onBack }: AuthPageProps) {
           {isSignUp && (
             <p className="text-center text-xs text-slate-400 mt-3">
               By signing up you are accepting our{' '}
-              <button
-                type="button"
-                onClick={() => setShowTerms(true)}
-                className="text-cyan-400 hover:text-cyan-300 underline transition-colors"
+              <CrossPressable
+                onPress={() => setShowTerms(true)}
+                className="text-cyan-400 hover:text-cyan-300 underline transition-colors inline"
               >
                 terms of service
-              </button>
+              </CrossPressable>
             </p>
           )}
 
           {/* Forgot Password (Sign In Only) */}
           {!isSignUp && (
             <div className="text-center">
-              <button
-                type="button"
+              <CrossPressable
+                onPress={() => {}}
                 className="text-cyan-400 text-sm hover:text-cyan-300 transition-colors"
               >
                 Forgot password?
-              </button>
+              </CrossPressable>
             </div>
           )}
         </form>
@@ -165,9 +166,8 @@ export default function AuthPage({ onBack }: AuthPageProps) {
 
         {/* Social Login Buttons */}
         <div className="space-y-3">
-          <button 
-            type="button"
-            onClick={async () => {
+          <CrossPressable 
+            onPress={async () => {
               setLoading(true);
               setError(null);
               const { error } = await signInWithGoogle();
@@ -178,6 +178,7 @@ export default function AuthPage({ onBack }: AuthPageProps) {
             }}
             disabled={loading}
             className="w-full flex items-center justify-center space-x-3 py-4 bg-slate-800/60 border border-slate-700/50 rounded-2xl text-white hover:bg-slate-700/60 hover:border-slate-600/50 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            style={{ zIndex: 10 }}
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -186,7 +187,7 @@ export default function AuthPage({ onBack }: AuthPageProps) {
               <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
             </svg>
             <span>Sign in with Google</span>
-          </button>
+          </CrossPressable>
         </div>
 
 
@@ -195,18 +196,18 @@ export default function AuthPage({ onBack }: AuthPageProps) {
           <span className="text-slate-400 text-sm">
             {isSignUp ? "Already have an account? " : "Don't have an account? "}
           </span>
-          <button
-            onClick={() => {
+          <CrossPressable
+            onPress={() => {
               setIsSignUp(!isSignUp);
               setError(null);
               setSuccess(null);
               setEmail('');
               setPassword('');
             }}
-            className="text-cyan-400 text-sm font-medium hover:text-cyan-300 transition-colors"
+            className="text-cyan-400 text-sm font-medium hover:text-cyan-300 transition-colors inline"
           >
             {isSignUp ? 'Sign In' : 'Sign Up'}
-          </button>
+          </CrossPressable>
         </div>
       </div>
 
